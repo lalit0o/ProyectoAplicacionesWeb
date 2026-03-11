@@ -1,6 +1,6 @@
 import BotonSubmit from "@/components/BotonSubmit";
 import Footer from "@/components/Footer";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 
 
 export default function login() {
