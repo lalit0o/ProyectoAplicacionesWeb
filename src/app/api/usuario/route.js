@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+//Esta mamada es para simular un backend que reciba un POST con email y contraseña,
+
 
 
 
