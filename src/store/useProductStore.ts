@@ -2,11 +2,12 @@ import {create} from 'zustand'
 
 
 interface Articulo {
-    id:Number;
-    titulo:String;
-    categoria:String;
-    precio:Number;
-    imagen:String;
+    id:number;
+    titulo:string;
+    categoria:string;
+    precio:number;
+    imagen:string;
+    descripcion?:string;
 }
 
 
@@ -19,8 +20,7 @@ type Store={
 
 export const useProductStore = create<Store>()((set,get)=>({
     articulos: [
-    { id: 1, titulo: "Hola1", categoria:"anillos",precio: 30, imagen: 'imagen2.webp' },
-    { id: 1, titulo: "caca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
+    { id: 1, titulo: "Hola1", categoria:"anillos",precio: 30, imagen: 'imagen2.webp',descripcion:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate." },
     { id: 2, titulo: "Mierda asdseca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
     { id: 3, titulo: "Mierdarfrrf seca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
     { id: 4, titulo: "Mierdarefgdbrt seca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },

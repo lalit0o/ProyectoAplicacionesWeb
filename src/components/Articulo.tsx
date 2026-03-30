@@ -5,6 +5,7 @@ type articulo = {
     titulo: string,
     precio: number,
     imagen: string
+    descripcion?: string
 }
 
 
