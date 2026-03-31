@@ -3,7 +3,7 @@ import Header from "../components/Header";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat" style={{backgroundImage: "url('imagen1.webp')"}}>      
+    <div className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat" style={{backgroundImage: "url('/imagen1.webp')"}}>      
       <Header />
 
       <main className="flex-1 flex-col justify-center text-white  px-4 ml-20 items-start" style={{fontFamily: "var(--font-geist-sans)"}}>

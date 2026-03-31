@@ -15,7 +15,7 @@ export const metadata = {
   title: "Kyanite ",
   description: "Kyanite's store",
 };
-
+  
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
