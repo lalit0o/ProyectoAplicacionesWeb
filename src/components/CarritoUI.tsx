@@ -1,6 +1,6 @@
 'use client'
 
-import { useCartStore } from "../../store/useProductStore";
+import { useCartStore } from "@/store/useProductStore";
 
 
 export default function CarritoUI() {

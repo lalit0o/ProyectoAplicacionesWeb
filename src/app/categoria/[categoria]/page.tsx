@@ -1,4 +1,4 @@
-import CategoriaUI from "./categoriaUI";
+import CategoriaUI from "@/components/CategoriaUI"; 
 
 type params = {
     categoria: string

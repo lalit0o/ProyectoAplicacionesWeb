@@ -1,5 +1,5 @@
-import ShopHeader from "../../../components/ShopHeader";
-import ProductUI from "./ProductUI";
+import ShopHeader from "@/components/ShopHeader";
+import ProductUI from "@/components/ProductUI";
 
 type params = {
     id: number

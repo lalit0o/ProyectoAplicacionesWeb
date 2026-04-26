@@ -1,6 +1,6 @@
-import ShopHeader from "../../../components/ShopHeader";
-import Footer from "../../../components/Footer";
-import Articulo from "../../../components/Articulo";
+import ShopHeader from "@/components/ShopHeader";
+import Footer from "@/components/Footer";
+import Articulo from "@/components/Articulo";
 
 
 type Articulo = {
