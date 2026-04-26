@@ -1,44 +1,118 @@
-import {create} from 'zustand'
+import { createWriteStream } from 'node:fs';
+import { create } from 'zustand'
 
 
 interface Articulo {
-    id:number;
-    titulo:string;
-    categoria:string;
-    precio:number;
-    imagen:string;
-    descripcion?:string;
+    id: number;
+    titulo: string;
+    categoria: string;
+    precio: number;
+    imagen: string;
+    descripcion?: string;
+}
+
+interface Carrito extends Articulo {
+    cantidad: number;
 }
 
 
-type Store={
-    articulos:Articulo[]
-    getProductosPorCategoria: (categoria:string)=>Articulo[];
+type Store = {
+    carrito: Carrito[];
+    modalOpen:boolean;
+    setModalOpen:(value:boolean)=>void;
+    agregarAlCarrito: (producto: Articulo) => void;
+    eliminarDelCarrito: (id: number) => void;
+    disminuirDelCarrito: (id: number) => void;
+    aumentarDelCarrito: (id: number) => void;
 
 }
 
 
-export const useProductStore = create<Store>()((set,get)=>({
-    articulos: [
-    { id: 1, titulo: "Hola1", categoria:"anillos",precio: 30, imagen: 'imagen2.webp',descripcion:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate." },
-    { id: 2, titulo: "Mierda asdseca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
-    { id: 3, titulo: "Mierdarfrrf seca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
-    { id: 4, titulo: "Mierdarefgdbrt seca", categoria: "anillos", precio: 30, imagen: 'imagen2.webp' },
-    { id: 5, titulo: "Mierdaholaaa seca", categoria: "aretes", precio: 30, imagen: 'imagen2.webp' },
-    { id: 6, titulo: "Mierda3232 seca", categoria: "aretes", precio: 30, imagen: 'imagen2.webp' },
-    { id: 7, titulo: "Mierda123131 seca", categoria: "aretes", precio: 30, imagen: 'imagen2.webp' },
-    { id: 8, titulo: "Mierda412312 seca", categoria: "pulseras", precio: 30, imagen: 'imagen2.webp' },
-    { id: 9, titulo: "Mierda1231 seca", categoria: "pulseras", precio: 30, imagen: 'imagen2.webp' },
-    { id: 10, titulo: "Mierda44123 seca", categoria: "pulseras", precio: 30, imagen: 'imagen2.webp' },
-    { id: 11, titulo: "Mierda 5234423seca", categoria: "chakras", precio: 30, imagen: 'imagen2.webp' },
-    { id: 12, titulo: "Mierda 12314413seca", categoria: "chakras", precio: 30, imagen: 'imagen2.webp' },
-    { id: 13, titulo: "Mierda2313 seca",categoria:"chakras", precio: 30, imagen: 'imagen2.webp' }],
+export const useCartStore = create<Store>()((set, get) => ({
+    carrito: [],
+    modalOpen:false,
+
+    setModalOpen: (value)=>{
+        set({modalOpen:value})
+    },
+    
+
+    agregarAlCarrito: (producto) => {
+        const carrito = get().carrito;
+
+        const existe = carrito.find(art => art.id === producto.id);
+        if (existe) {
+            set({
+                carrito: carrito.map(item =>
+                    item.id === producto.id
+                        ? { ...item, cantidad: item.cantidad + 1 }
+                        : item
+                )
+            });
+        }
+        else {
+            set({
+                carrito: [...carrito, { ...producto, cantidad: 1 }]
+            })
+        }
 
 
 
-    getProductosPorCategoria: (categoria) =>{
+    },
 
-        return get().articulos.filter(art=>art.categoria==categoria);
-        
+    eliminarDelCarrito: (id) => {
+        set((state) => ({
+            carrito: state.carrito.filter((item) => item.id !== id)
+        }));
+    },
+
+    disminuirDelCarrito: (id) => {
+
+
+        const carrito = get().carrito;
+
+        const articulo = carrito.find(item => item.id === id);
+
+        if (!articulo) {
+            return;
+
+        }
+
+        if (articulo.cantidad === 1) {
+            get().eliminarDelCarrito(id);
+        }
+        else {
+            set({
+                carrito: carrito.map(item =>
+                    item.id === id
+                        ? { ...item, cantidad: item.cantidad - 1 }
+                        : item
+                )
+            })
+        }
+    },
+
+    aumentarDelCarrito: (id) => {
+        const carrito = get().carrito;
+
+        const articulo = carrito.find(item => item.id === id);
+
+        if (!articulo) return;
+
+        set({
+            carrito: carrito.map(item =>
+                item.id === id
+                    ? { ...item, cantidad: item.cantidad - 1 }
+                    : item
+            )
+        })
     }
+
+
+
+
+
+
+
+
 }))

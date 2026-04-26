@@ -1,40 +1,55 @@
-'use client'
-import {use} from "react";
-import { useProductStore } from "../../../store/useProductStore";
-import Header from "../../../components/Header";
-import Footer from "../../../components/Footer";
-import Articulo from "../../../components/Articulo";
-import Submenu from "../../../components/Submenu";
+import CategoriaUI from "./categoriaUI";
 
-
-type categorias = "todos" | "anillos" | "collares" | "pulseras" | "aretes";
-
-type props = {
-    params: Promise<{categoria: categorias  }>
+type params = {
+    categoria: string
 }
 
-export default function Categoria({ params }: props) {
+type props = {
+    params: params
+}
 
-    const getProductosPorCategoria = useProductStore((state) => state.getProductosPorCategoria);
-    const articulosCompletos = useProductStore((state) => state.articulos);
+interface Articulo {
+    id:number;
+    titulo:string;
+    categoria:string;
+    precio:number;
+    imagen:string;
+    descripcion?:string;
+}
 
-    const { categoria } = use(params);
+async function getByCategoria(categoria)
+{
+    const articulos: Articulo[]=[
+    { id: 1, titulo: "Hola1", categoria:"anillos",precio: 30, imagen: '/vestido.png',descripcion:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate." },
+    { id: 2, titulo: "Mierda asdseca", categoria: "anillos", precio: 30, imagen: '/vestido.png' },
+    { id: 3, titulo: "Mierdarfrrf seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
+    { id: 4, titulo: "Mierdarefgdbrt seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
+    { id: 5, titulo: "Mierdaholaaa seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
+    { id: 6, titulo: "Mierda3232 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
+    { id: 7, titulo: "Mierda123131 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
+    { id: 8, titulo: "Mierda412312 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
+    { id: 9, titulo: "Mierda1231 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
+    { id: 10, titulo: "Mierda44123 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
+    { id: 11, titulo: "Mierda 5234423seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
+    { id: 12, titulo: "Mierda 12314413seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
+    { id: 13, titulo: "Mierda2313 seca",categoria:"chakras", precio: 30, imagen: '/imagen2.webp' }];
 
-    const articulos = categoria === "todos" ? articulosCompletos : getProductosPorCategoria(categoria);
+    if(categoria==="todos")
+        return articulos;
+
+    return articulos.filter(art=>art.categoria===categoria);
 
 
-    return (<>
-        <Header />
-        <Submenu />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ml-5 mr-5">
-            {articulos.map((item) => (
-                <Articulo key={item.id} articulo={item} />
-            ))}
-        </div>
+}
 
 
 
-        <Footer />
-    </>
-    );
+export default async function Producto({ params }: props) {
+
+    const {categoria}= await params;
+    console.log(categoria);
+    
+    const articulos=  await getByCategoria(categoria)
+
+    return <CategoriaUI articulos={articulos}/>
 }

@@ -17,13 +17,19 @@ type props = {
 export default function Articulo({ articulo }: props) {
     return (
         <Link href={`/producto/${articulo.id}`}>
-            <div className="flex flex-col text-center bg-pink-100 py-5 px-5 rounded-2xl text-black hover:bg-pink-200 transition-colors duration-300">
-                <Image src='/imagen2.webp'
-                    width={500}
-                    height={200}
-                    alt='Picture of the author' />
-                <h1 className="">{articulo.titulo}</h1>
-                <p className="">{articulo.precio}</p>
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div className='text-black text-center p-4'>
+                    <h1 className="text-2xl">{articulo.titulo}</h1>
+                </div>
+                <div className='aspect-[3/4] relative'>
+                    <Image src='/vestido.png'
+                        fill
+                        alt='Picture of the author' />
+
+                </div>
+                <div className='p-4'>
+                    <p className="text-black text-center">${articulo.precio}</p>
+                </div>
 
 
             </div>
