@@ -1,6 +1,6 @@
 
-import ShopHeader from "../../components/ShopHeader"
-import CarritoUI from "./CarritoUI"
+import ShopHeader from "@/components/ShopHeader"
+import CarritoUI from "@/components/CarritoUI";
 
 
 export default function Carrito() {

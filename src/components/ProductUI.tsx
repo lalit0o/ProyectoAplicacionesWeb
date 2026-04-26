@@ -1,9 +1,9 @@
 'use client'
-import ShopHeader from "../../../components/ShopHeader";
-import Footer from "../../../components/Footer";
+import ShopHeader from "@/components/ShopHeader";
+import Footer from "@/omponents/Footer";
 import Image from 'next/image'
-import { useCartStore } from "../../../store/useProductStore";
-import MensajeModal from "../../../components/mensajeModal";
+import { useCartStore } from "@/store/useProductStore";
+import MensajeModal from "@/components/mensajeModal";
 
 
 
