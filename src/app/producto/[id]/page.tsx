@@ -1,13 +1,6 @@
-import ShopHeader from "@/components/ShopHeader";
 import ProductUI from "@/components/ProductUI";
+import { notFound } from "next/navigation"; 
 
-type params = {
-    id: number
-}
-
-type props = {
-    params: params
-}
 
 interface Articulo {
     id: number;
@@ -18,32 +11,37 @@ interface Articulo {
     descripcion?: string;
 }
 
+type Props = {
+    params: Promise<{ id: string }>;
+};
 
 
-export default async function Producto({ params }: props) {
-
+async function getArticuloById(id: string): Promise<Articulo | undefined> {
     const articulos: Articulo[] = [
-        { id: 1, titulo: "Hola1", categoria: "anillos", precio: 30, imagen: '/vestido.png', descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate." },
-        { id: 2, titulo: "Mierda asdseca", categoria: "anillos", precio: 30, imagen: '/vestido.png' },
-        { id: 3, titulo: "Mierdarfrrf seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
-        { id: 4, titulo: "Mierdarefgdbrt seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
-        { id: 5, titulo: "Mierdaholaaa seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-        { id: 6, titulo: "Mierda3232 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-        { id: 7, titulo: "Mierda123131 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-        { id: 8, titulo: "Mierda412312 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-        { id: 9, titulo: "Mierda1231 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-        { id: 10, titulo: "Mierda44123 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-        { id: 11, titulo: "Mierda 5234423seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
-        { id: 12, titulo: "Mierda 12314413seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
-        { id: 13, titulo: "Mierda2313 seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' }];
+        { id: 1, titulo: "Anillo Gota de Luna", categoria: "anillos", precio: 850, imagen: '/imagen1.webp', descripcion: "Plata de ley con piedra luna auténtica." },
+        { id: 2, titulo: "Anillo Karma", categoria: "anillos", precio: 450, imagen: '/imagen1.webp' },
+        { id: 3, titulo: "Anillo Selene", categoria: "anillos", precio: 520, imagen: '/imagen1.webp' },
+        { id: 5, titulo: "Aretes Amatista", categoria: "aretes", precio: 320, imagen: '/imagen2.webp' },
+    
+    ];
+
+ 
+    return articulos.find(art => art.id == Number(id));
+}
+
+
+export default async function ProductPage({ params }: Props) {
 
     const { id } = await params;
-    const articulo = articulos.find(art => art.id == id);
-    if (!articulo) return <div>Articulo no encontrado</div>
 
+  
+    const articulo = await getArticuloById(id);
 
+  
+    if (!articulo) {
+        notFound();
+    }
 
-    return <>
-        <ShopHeader />
-        <ProductUI producto={articulo}></ProductUI></>
+    
+    return <ProductUI producto={articulo} />;
 }

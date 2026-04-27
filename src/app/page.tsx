@@ -1,22 +1,33 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Link from "next/link";
+
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat" style={{backgroundImage: "url('/imagen1.webp')"}}>      
-      <Header />
+ 
+    <div 
+      className="min-h-[calc(100vh-80px)] flex items-center bg-cover bg-center bg-no-repeat" 
+      style={{ backgroundImage: "url('/imagen1.webp')" }}
+    >      
+      
+  
 
-      <main className="flex-1 flex-col justify-center text-white  px-4 ml-20 items-start" style={{fontFamily: "var(--font-geist-sans)"}}>
-        <div className="flex-1 mb-20"></div>
-        <h2 className="text-6xl text-left">Magia universal <br/>en tu accesorio ideal.</h2>
+      <main className="container mx-auto px-8 md:px-20 text-white flex flex-col items-start">
         
-        <button className="mt-8 px-20 py-4 bg-white hover:bg-blue-700 text-black rounded-3xl transition-colors uppercase">comprar</button>
+        <h2 className="text-5xl md:text-7xl font-serif leading-tight">
+          Magia universal <br/>
+          <span className="italic">en tu accesorio ideal.</span>
+        </h2>
+        
+    
+        <Link href="/categoria/todos">
+            <button className="mt-10 px-12 py-4 bg-white hover:bg-zinc-100 text-black rounded-full transition-all duration-300 uppercase tracking-widest text-sm font-bold shadow-xl">
+                Explorar Colección
+            </button>
+        </Link>
+
       </main>
 
-      <Footer />
       
     </div>
-
-
   )
-}
+} 

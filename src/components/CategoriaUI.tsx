@@ -1,37 +1,42 @@
-import ShopHeader from "@/components/ShopHeader";
-import Footer from "@/components/Footer";
 import Articulo from "@/components/Articulo";
 
-
-type Articulo = {
-    id: number,
-    titulo: string,
-    categoria: string,
-    precio: number,
-    imagen: string,
-    descripcion?: string,
-
-}
-type props = {
-    articulos:Articulo[]
+type ArticuloType = {
+    id: number;
+    titulo: string;
+    categoria: string;
+    precio: number;
+    imagen: string;
+    descripcion?: string;
+    esNuevo?: boolean;
 }
 
-export default function CategoriaUI({ articulos }:props) {
+type Props = {
+    articulos: ArticuloType[];
+    tituloCategoria?: string; 
+}
 
+export default function CategoriaUI({ articulos, tituloCategoria = "Nuestra Colección" }: Props) {
+    
+  
+    return (
+       
+        <main className="container mx-auto px-4 py-12 md:py-16">
+            
+           
+            <div className="flex flex-col items-center text-center mb-16">
+                <h1 className="text-4xl font-serif text-zinc-900 mb-6 capitalize">
+                    {tituloCategoria}
+                </h1>
+               
+                <div className="h-px w-24 bg-zinc-200" /> 
+            </div>
 
-
-
-    return (<>
-        <ShopHeader />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ml-5 mr-5">
-            {articulos.map((item) => (
-                <Articulo key={item.id} articulo={item} />
-            ))}
-        </div>
-
-
-
-        <Footer />
-    </>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
+                {articulos.map((item) => (
+                    <Articulo key={item.id} articulo={item} />
+                ))}
+            </div>
+            
+        </main>
     );
 }

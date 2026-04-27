@@ -1,30 +1,24 @@
-'use client'
-
-import ShopHeader from "../../components/ShopHeader";
-import Footer from "../../components/Footer";
-import Articulo from "../../components/Articulo";
-import {useCartStore} from "../../store/useProductStore";
+import CategoriaUI from "@/components/CategoriaUI";
 
 
+async function getAllArticulos() {
+    return [
+        { id: 1, titulo: "Anillo Gota de Luna", categoria: "anillos", precio: 850, imagen: '/imagen1.webp' },
+        { id: 2, titulo: "Collar Amatista", categoria: "collares", precio: 1200, imagen: '/imagen2.webp' },
+        { id: 5, titulo: "Aretes Cuarzo", categoria: "aretes", precio: 350, imagen: '/imagen2.webp' },
+        { id: 8, titulo: "Pulsera Ojo de Tigre", categoria: "pulseras", precio: 600, imagen: '/imagen2.webp' },
+        
+    ];
+}
 
-export default function Tienda() {
-    const articulos = useCartStore((state)=>state.carrito);
+export default async function TiendaPage() {
 
-    
-    
-    return (<div className="min-h-screen">
-        <ShopHeader />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ml-5 mr-5">
-            {articulos.map((item) => (
-            <Articulo key={item.id} articulo={item} />
-        ))}
-        </div>
+    const productos = await getAllArticulos();
 
-
-
-        <Footer />
-
-
-    </div>)
-
+    return (
+        <CategoriaUI 
+            articulos={productos} 
+            tituloCategoria="Catálogo Completo" 
+        />
+    );
 }
