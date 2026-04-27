@@ -1,5 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,17 +18,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Kyanite ",
-  description: "Kyanite's store",
+  title: "Kyanite | Joyería Artesanal",
+  description: "Piezas únicas creadas a mano con gemas naturales.",
 };
-  
-export default function RootLayout({ children }) {
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en">
+   
+    <html lang="es" className={cn("font-sans", figtree.variable)}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          `${geistSans.variable} ${geistMono.variable} antialiased`,
+          "bg-white text-zinc-900 flex flex-col min-h-screen"
+        )}
       >
-        {children}
+     
+        <Header /> 
+
+      
+        <main className="flex-grow">
+          {children}
+        </main>
+
+        
+        <Footer />
       </body>
     </html>
   );

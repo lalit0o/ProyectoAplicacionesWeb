@@ -1,55 +1,48 @@
-import CategoriaUI from "@/components/CategoriaUI"; 
+import CategoriaUI from "@/components/CategoriaUI";
 
-type params = {
-    categoria: string
-}
-
-type props = {
-    params: params
-}
 
 interface Articulo {
-    id:number;
-    titulo:string;
-    categoria:string;
-    precio:number;
-    imagen:string;
-    descripcion?:string;
+    id: number;
+    titulo: string;
+    categoria: string;
+    precio: number;
+    imagen: string;
+    descripcion?: string;
 }
 
-async function getByCategoria(categoria)
-{
-    const articulos: Articulo[]=[
-    { id: 1, titulo: "Hola1", categoria:"anillos",precio: 30, imagen: '/vestido.png',descripcion:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate." },
-    { id: 2, titulo: "Mierda asdseca", categoria: "anillos", precio: 30, imagen: '/vestido.png' },
-    { id: 3, titulo: "Mierdarfrrf seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
-    { id: 4, titulo: "Mierdarefgdbrt seca", categoria: "anillos", precio: 30, imagen: '/imagen2.webp' },
-    { id: 5, titulo: "Mierdaholaaa seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-    { id: 6, titulo: "Mierda3232 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-    { id: 7, titulo: "Mierda123131 seca", categoria: "aretes", precio: 30, imagen: '/imagen2.webp' },
-    { id: 8, titulo: "Mierda412312 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-    { id: 9, titulo: "Mierda1231 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-    { id: 10, titulo: "Mierda44123 seca", categoria: "pulseras", precio: 30, imagen: '/imagen2.webp' },
-    { id: 11, titulo: "Mierda 5234423seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
-    { id: 12, titulo: "Mierda 12314413seca", categoria: "chakras", precio: 30, imagen: '/imagen2.webp' },
-    { id: 13, titulo: "Mierda2313 seca",categoria:"chakras", precio: 30, imagen: '/imagen2.webp' }];
-
-    if(categoria==="todos")
-        return articulos;
-
-    return articulos.filter(art=>art.categoria===categoria);
+type Props = {
+    params: Promise<{ categoria: string }>; 
+};
 
 
+async function getByCategoria(categoria: string): Promise<Articulo[]> {
+    const articulos: Articulo[] = [
+        { id: 1, titulo: "Anillo Gota de Luna", categoria: "anillos", precio: 850, imagen: '/imagen1.webp', descripcion: "Acero inoxidable con piedra luna." },
+        { id: 2, titulo: "Anillo Karma", categoria: "anillos", precio: 450, imagen: '/imagen1.webp' },
+        { id: 3, titulo: "Anillo Selene", categoria: "anillos", precio: 520, imagen: '/imagen1.webp' },
+        { id: 5, titulo: "Aretes Amatista", categoria: "aretes", precio: 320, imagen: '/imagen2.webp' },
+        { id: 6, titulo: "Aretes Cuarzo Rosa", categoria: "aretes", precio: 320, imagen: '/imagen2.webp' },
+        { id: 8, titulo: "Pulsera Ojo de Tigre", categoria: "pulseras", precio: 600, imagen: '/imagen2.webp' },
+        { id: 11, titulo: "Collar Chakra Garganta", categoria: "chakras", precio: 750, imagen: '/imagen2.webp' },
+       
+    ];
+
+    if (categoria === "todos") return articulos;
+    return articulos.filter(art => art.categoria === categoria);
 }
 
-
-
-export default async function Producto({ params }: props) {
-
-    const {categoria}= await params;
-    console.log(categoria);
+export default async function CategoriaPage({ params }: Props) {
     
-    const articulos=  await getByCategoria(categoria)
+    const { categoria } = await params;
+    
+   
+    const articulos = await getByCategoria(categoria);
 
-    return <CategoriaUI articulos={articulos}/>
+ 
+    return (
+        <CategoriaUI 
+            articulos={articulos} 
+            tituloCategoria={categoria === "todos" ? "Colección Completa" : categoria} 
+        />
+    );
 }
