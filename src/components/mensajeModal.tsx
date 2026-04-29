@@ -5,6 +5,7 @@ type Props = {
     open: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    
 }
 
 export default function MensajeModal({ open, onClose, children }: Props) {
