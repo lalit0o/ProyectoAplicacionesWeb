@@ -9,7 +9,7 @@ export default function UserProfile({ user }) {
 
     return (
         <div className="relative">
-            <button onMouseEnter={() => setIsOpen(!isOpen)} onMouseLeave={()=>setIsOpen(!isOpen)}>
+            <button onMouseEnter={() => setIsOpen(!isOpen)} onMouseLeave={() => setIsOpen(!isOpen)}>
                 👤
             </button>
 

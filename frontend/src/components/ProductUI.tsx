@@ -17,7 +17,7 @@ type ProductoType = {
 }
 
 export default function ProductUI({ producto }: { producto: ProductoType }) {
-    
+
     const agregarAlCarrito = useCartStore((state) => state.agregarAlCarrito);
     const modalOpen = useCartStore((state) => state.modalOpen);
     const setModalOpen = useCartStore((state) => state.setModalOpen);
@@ -28,28 +28,28 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
     };
 
     return (
-       
+
         <main className="container mx-auto px-4 py-12 md:py-24">
-            
-           
+
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-                
-               
+
+
                 <div className="relative aspect-square w-full bg-zinc-50 rounded-sm overflow-hidden">
                     <Image
                         src={producto.imagen || '/vestido.png'}
                         fill
-                        sizes="(max-width: 9504px) 100vw, 50vw" 
+                        sizes="(max-width: 9504px) 100vw, 50vw"
                         className="object-cover"
                         alt={`Fotografía detallada de ${producto.titulo}`}
-                        priority 
+                        priority
                     />
                 </div>
 
-           
+
                 <div className="flex flex-col pt-4 lg:pt-12">
-                    
-                 
+
+
                     <h1 className="text-4xl md:text-5xl font-serif text-zinc-900 mb-4">
                         {producto.titulo}
                     </h1>
@@ -59,17 +59,17 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
 
                     <hr className="border-zinc-200 mb-8" />
 
-                 
+
                     <div className="prose prose-zinc mb-12">
                         <p className="text-zinc-600 leading-relaxed text-lg">
                             {producto.descripcion || "Descripción del artículo."}
                         </p>
                     </div>
 
-                   
+
                     <div className="mt-auto">
-                        <Button 
-                            onClick={handleAgregar} 
+                        <Button
+                            onClick={handleAgregar}
                             className="w-full md:w-auto text-lg py-7 px-12 bg-zinc-900 text-white hover:bg-zinc-800 transition-all flex items-center justify-center gap-3"
                         >
                             <ShoppingBag className="w-5 h-5" />
@@ -77,7 +77,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                         </Button>
                     </div>
 
-                  
+
                     <MensajeModal open={modalOpen} onClose={() => setModalOpen(false)}>
                         <div className="text-center p-4">
                             <p className="font-serif text-xl text-zinc-900 mb-2">¡Añadido con éxito!</p>
