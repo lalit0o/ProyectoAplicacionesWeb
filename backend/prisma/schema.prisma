@@ -95,6 +95,7 @@ model Producto {
 model Material {
   id     Int    @id @default(autoincrement())
   nombre String
+  stock Boolean @default(true)
 
   // Relaciones
   recetas Receta[]
