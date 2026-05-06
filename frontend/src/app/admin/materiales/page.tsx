@@ -7,11 +7,11 @@ export default async function MaterialesAdminPage() {
 
   return (
     <div className="p-8 space-y-6">
-      {/* ... (Todo tu header que ya tenías) ... */}
+     
 
       <div className="bg-white border border-zinc-200 rounded-2xl overflow-hidden shadow-sm">
         <table className="w-full text-left">
-          {/* ... (Tu thead que ya tenías) ... */}
+        
           <tbody className="divide-y divide-zinc-100">
             {materiales.length === 0 ? (
               <tr>
