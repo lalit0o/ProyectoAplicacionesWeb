@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
+import './globals.css';
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";

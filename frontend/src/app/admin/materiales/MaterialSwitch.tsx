@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { materialesService } from '@/services/materiales.service';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     id: number;
@@ -8,21 +10,33 @@ type Props = {
 }
 
 export default function MaterialSwitch({ id, initialStock }: Props) {
-    // Por ahora, manejamos el estado visualmente en React.
-    // En el futuro, aquí llamaremos a NestJS.
     const [enStock, setEnStock] = useState(initialStock);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter(); // Para refrescar la página silenciosamente
 
-    const handleToggle = () => {
+    const handleToggle = async () => {
         setIsLoading(true);
+        const nuevoEstado = !enStock;
         
-        // Simulamos que tarda medio segundo en ir al servidor
-        setTimeout(() => {
-            setEnStock(!enStock);
+        try {
+            setEnStock(nuevoEstado);
+            
+            // Petición  a NestJS
+            await materialesService.toggleStock(id, nuevoEstado);
+            
+            // Le decimos a Next.js que revalide los datos del servidor en el fondo
+            router.refresh();
+        } catch (error) {
+            // Si el backend falla  revertimos el botón
+            console.error(error);
+            setEnStock(!nuevoEstado); 
+            alert("Hubo un error al guardar en la base de datos.");
+        } finally {
             setIsLoading(false);
-        }, 500);
+        }
     };
 
+   
     return (
         <button
             onClick={handleToggle}
