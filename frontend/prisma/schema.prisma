@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  ADMIN
+  CLIENTE
+}
+
+enum MetodoEntrega {
+  PAQUETERIA
+  RECOLECCION
+}
+
+enum EstadoPedido {
+  PENDIENTE
+  ACEPTADO
+  ELABORANDO
+  TERMINADO
+  ENVIADO
+  ENTREGADO
+}
+
+model Usuario {
+  id       Int     @id @default(autoincrement())
+  nombre   String
+  email    String  @unique
+  password String
+  telefono String?
+  rol      Rol     @default(CLIENTE)
+
+  // Relaciones
+  direcciones Direccion[]
+  pedidos     Pedido[]
+
+  @@map("usuarios")
+}
+
+model Direccion {
+  id           Int     @id @default(autoincrement())
+  usuarioId    Int
+  usuario      Usuario @relation(fields: [usuarioId], references: [id])
+  calle        String
+  ciudad       String
+  codigoPostal String
+  referencia   String?
+
+  // Relacion
+  pedidos Pedido[]
+
+  @@map("direcciones")
+}
+
+model Pedido {
+  id          Int        @id @default(autoincrement())
+  usuarioId   Int
+  usuario     Usuario    @relation(fields: [usuarioId], references: [id])
+  direccionId Int?
+  direccion   Direccion? @relation(fields: [direccionId], references: [id])
+  total         Float
+  metodoEntrega MetodoEntrega
+  estadoPedido  EstadoPedido  @default(PENDIENTE)
+  fechaCreacion DateTime      @default(now())
+
+  // Relaciones
+  detalles     DetallePedido[]
+  pagoSimulado PagoSimulado?
+
+  @@map("pedidos")
+}
+
+model Producto {
+  id        Int     @id @default(autoincrement())
+  titulo    String
+  precio    Float
+  imagenUrl String?
+  enStock   Boolean @default(true)
+
+  // Relaciones
+  detalles DetallePedido[]
+  recetas  Receta[]
+
+  @@map("productos")
+}
+
+model Material {
+  id     Int    @id @default(autoincrement())
+  nombre String
+  enStock Boolean  @default(true)
+
+  // Relaciones
+  recetas Receta[]
+
+  @@map("materiales")
+}
+
+model DetallePedido {
+  id         Int      @id @default(autoincrement())
+  pedidoId   Int
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+  productoId Int
+  producto   Producto @relation(fields: [productoId], references: [id])
+
+  cantidadComprada Int
+  precioUnitario   Float
+
+  @@map("detalle_pedidos")
+}
+
+model PagoSimulado {
+  id              Int     @id @default(autoincrement())
+  pedidoId        Int     @unique
+  pedido          Pedido  @relation(fields: [pedidoId], references: [id])
+  referenciaFalsa String
+  exitoso         Boolean @default(false)
+
+  @@map("pagos_simulados")
+}
+
+model Receta {
+  id         Int      @id @default(autoincrement())
+  productoId Int
+  producto   Producto @relation(fields: [productoId], references: [id])
+  materialId Int
+  material   Material @relation(fields: [materialId], references: [id])
+
+  @@map("recetas")
+}
