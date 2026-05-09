@@ -24,9 +24,8 @@ export default async function MaterialesAdminPage() {
               materiales.map((m) => (
                 <tr key={m.id} className="group hover:bg-zinc-50/50 transition-colors">
                   <td className="px-6 py-4 font-medium text-zinc-900">{m.nombre}</td>
-                  <td className="px-6 py-4 text-zinc-500 text-sm">{m.categoria}</td>
                   <td className="px-6 py-4 flex justify-center">
-                    {/* Le pasamos el ID y el stock inicial al Switch */}
+                   
                     <MaterialSwitch id={m.id} initialStock={m.enStock} />
                   </td>
                   <td className="px-6 py-4 text-right text-xs text-zinc-400 hover:text-zinc-900 cursor-pointer">
