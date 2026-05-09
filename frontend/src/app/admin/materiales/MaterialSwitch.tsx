@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { materialesService } from '@/services/materiales.service';
-import { useRouter } from 'next/navigation';
+import { startTransition, useState, useTransition } from 'react'
+import {toggleStock}  from './actions'
 
 type Props = {
     id: number;
@@ -10,46 +9,46 @@ type Props = {
 }
 
 export default function MaterialSwitch({ id, initialStock }: Props) {
-    const [enStock, setEnStock] = useState(initialStock);
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter(); // Para refrescar la página silenciosamente
+    const [enStock, setEnStock] = useState(initialStock); // Estado local para reflejar el cambio inmediatamente
+
+    const [isPending, startTransition] = useTransition();
 
     const handleToggle = async () => {
-        setIsLoading(true);
-        const nuevoEstado = !enStock;
-        
-        try {
-            setEnStock(nuevoEstado);
-            
-            // Petición  a NestJS
-            await materialesService.toggleStock(id, nuevoEstado);
-            
-            // Le decimos a Next.js que revalide los datos del servidor en el fondo
-            router.refresh();
-        } catch (error) {
-            // Si el backend falla  revertimos el botón
-            console.error(error);
-            setEnStock(!nuevoEstado); 
-            alert("Hubo un error al guardar en la base de datos.");
-        } finally {
-            setIsLoading(false);
-        }
+      
+        const estadoPrevio = enStock;
+
+        setEnStock(!estadoPrevio) // Cambiamos el estado local inmediatamente para una mejor UX
+
+        startTransition(async () => {
+            const result = await toggleStock(id, estadoPrevio); // Llamamos a la función del servidor para actualizar el stock
+            if (!result.success) {
+                setEnStock(estadoPrevio); // Si hubo un error, revertimos el estado local
+                alert(result.error || "Error al cambiar el estado de stock");
+            }
+        });
     };
 
    
     return (
         <button
+            type="button"
+            role="switch"
+            aria-checked={enStock}
             onClick={handleToggle}
-            disabled={isLoading}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 ${
-                enStock ? 'bg-zinc-900' : 'bg-zinc-300'
-            } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            disabled={isPending}
+            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent 
+                transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2
+                ${enStock ? 'bg-zinc-900' : 'bg-zinc-200'}
+                ${isPending ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}
+            `}
         >
-            <span className="sr-only">Cambiar estado de stock</span>
+            <span className="sr-only">Toggle stock</span>
             <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
-                    enStock ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`
+                    pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 
+                    transition duration-200 ease-in-out
+                    ${enStock ? 'translate-x-5' : 'translate-x-0'}
+                `}
             />
         </button>
     )

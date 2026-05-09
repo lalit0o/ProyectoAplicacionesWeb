@@ -1,9 +1,10 @@
 import MaterialSwitch from "./MaterialSwitch";
-import { materialesService } from "@/services/materiales.service";
+import { prisma } from "@/lib/prisma"; // Con el cambio ahora de full stack en next podemos importar prisma desde la vista.
+
 
 export default async function MaterialesAdminPage() {
  
-  const materiales = await materialesService.obtenerTodos();
+  const materiales = await prisma.material.findMany({orderBy: { nombre: "asc" }});
 
   return (
     <div className="p-8 space-y-6">
