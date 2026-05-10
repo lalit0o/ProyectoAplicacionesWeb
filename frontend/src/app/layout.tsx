@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Kyanite | Joyería Artesanal",
+  title: "Kyanite Artesanal",
   description: "Piezas únicas creadas a mano con gemas naturales.",
 };
 
