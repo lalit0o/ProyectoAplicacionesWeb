@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link';
-import { ShoppingBag, User } from 'lucide-react';
+import { ShoppingBag} from 'lucide-react';
 import { useCartStore } from '@/store/useProductStore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import UserProfile from '@/components/UserProfile'
 
 export default function Header() {
 
@@ -38,11 +39,7 @@ export default function Header() {
             <div className="flex justify-end items-center gap-2">
 
 
-                <Link href="/perfil">
-                    <Button variant="ghost" size="icon" className="text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50">
-                        <User className="h-5 w-5" />
-                    </Button>
-                </Link>
+                <UserProfile/>
 
 
                 <Link href="/carrito-de-compras">

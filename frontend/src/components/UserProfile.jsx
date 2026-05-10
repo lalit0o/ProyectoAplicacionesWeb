@@ -1,16 +1,24 @@
 'use client'
 
 import { useState } from "react";
+import { User } from 'lucide-react';
+
+// type user ={
 
 
 
-export default function UserProfile({ user }) {
+
+
+export default function UserProfile() {
     const [isOpen, setIsOpen] = useState(false);
+    const user = {name:"Josesito",email:"josesito@hotmail.com"}
 
     return (
         <div className="relative">
             <button onMouseEnter={() => setIsOpen(!isOpen)} onMouseLeave={() => setIsOpen(!isOpen)}>
-                👤
+                <User className="h-5 w-5" />
+
+
             </button>
 
             {isOpen && (

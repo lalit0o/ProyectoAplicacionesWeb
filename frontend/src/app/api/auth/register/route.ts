@@ -9,6 +9,10 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { nombre, email, password } = body;
 
+        if(!nombre || !email || !password){
+            return NextResponse.json({message: "Faltan credenciales"},{status:401});
+        }
+
         const existeUsuario = await prisma.usuario.findUnique({
             where: { email }
         });
