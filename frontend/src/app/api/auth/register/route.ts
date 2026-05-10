@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+
+
+type Usuario ={
+    nombre: string,
+    email:string,
+    password:string,
+    telefono?:string
+}
 
 // registro
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const { nombre, email, password } = body;
+        
+        const { nombre, email, password,telefono }:Usuario = await request.json();
 
         if(!nombre || !email || !password){
             return NextResponse.json({message: "Faltan credenciales"},{status:401});
@@ -23,21 +30,17 @@ export async function POST(request: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const nuevoUsuario = await prisma.usuario.create({
+        await prisma.usuario.create({
             data: {
                 nombre,
                 email,
                 password: hashedPassword,
+                telefono:telefono || null
             },
         });
 
-        const token = jwt.sign(
-            {sub: nuevoUsuario.id, email: nuevoUsuario.email, rol: nuevoUsuario.rol },
-            process.env.JWT_SECRET || 'secretito',
-            {expiresIn: '1h'}
-        );
 
-        return NextResponse.json({ message: "Usuario registrado exitosamente", token }, {status: 201});
+        return NextResponse.json({ message: "Usuario registrado exitosamente"}, {status: 201});
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Error interno del servidor"}, {status: 500});

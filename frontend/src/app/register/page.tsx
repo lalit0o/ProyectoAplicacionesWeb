@@ -26,16 +26,30 @@ export default function Register() {
         setTelefono(event.target.value);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
-        if (!email || !password) {
+        if (!email || !password || !nombre) {
             console.log("Debes ingresar todos los parámetros");
         }
-        const usuario = { email: email, password: password };
+        try{
+            const res = await fetch('/api/auth/register',{
+                method: "POST",
+                headers:{
+                    "content-type":"application/json",
+                },
+                body: JSON.stringify({})
+            })
 
-        const res = RegisterService({ usuario });
-        console.log(res);
+            const data= res.json();
+            console.log(data);
+
+        }catch(error)
+        {
+            console.log(error);
+        }
+
+        
 
 
 
