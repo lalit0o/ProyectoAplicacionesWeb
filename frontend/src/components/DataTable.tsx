@@ -56,7 +56,7 @@ export function MaterialesDataTable<TData, TValue>({
         />
       </div>
 
-      {/* LA TABLA */}
+     
       <div className="rounded-2xl border border-zinc-200 bg-white overflow-hidden shadow-sm">
         <Table>
           <TableHeader className="bg-zinc-50/50">

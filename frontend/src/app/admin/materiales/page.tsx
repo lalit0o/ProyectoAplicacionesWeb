@@ -15,7 +15,7 @@ export default async function MaterialesAdminPage() {
       
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-100 pb-6">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 font-sans">
+          <h1 className="text-3xl font-serif text-zinc-900 tracking-tigh">
             Panel de materiales
           </h1>
           <p className="text-zinc-500 text-sm">
