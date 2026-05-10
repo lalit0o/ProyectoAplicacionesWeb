@@ -29,9 +29,13 @@ export async function eliminarMaterial(id: number) {
         });
         revalidatePath('/admin/materiales')
         return{success: true};
-    }catch(error){
-        console.error("Error al intentar eliminar el material:", error)
-        return{success: false, error: "Error al intentar eliminar el material"};
+    }catch(error: any){
+       if (error.code === 'P2003') {
+            return { 
+                success: false, 
+                error: "No se puede eliminar mientras sea parte de una receta." 
+            };
+        }
     }
 }   
 

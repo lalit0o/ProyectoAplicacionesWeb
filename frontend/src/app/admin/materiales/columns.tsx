@@ -2,9 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import MaterialSwitch from "./MaterialSwitch"
-import MaterialEditar from "./MaterialEditar";
+import MaterialAcciones from "./MaterialAcciones";
 
-// Definimos la forma de nuestros datos según tu esquema de Prisma
+
 export type Material = {
   id: number
   nombre: string
@@ -40,15 +40,15 @@ export const columns: ColumnDef<Material>[] = [
   },
   {
     id: "acciones",
-    header: () => <div className="text-right px-6">Acciones</div>,
+    header: () => <div className="text-right mr-4">Acciones</div>,
     cell: ({ row }) => {
-      const material = row.original;
+      const material = row.original 
 
       return (
         <div className="text-right px-6">
-          <MaterialEditar material={material} />
+          <MaterialAcciones material={material} />
         </div>
-      );
+      )
     },
   },
 ]

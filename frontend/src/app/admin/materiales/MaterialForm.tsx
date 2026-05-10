@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from "react"
-import { crearMaterial, editarMaterial } from "./actions"
+import { crearMaterial, editarMaterial} from "./actions"
 
 interface Props {
     onSuccess: () => void;

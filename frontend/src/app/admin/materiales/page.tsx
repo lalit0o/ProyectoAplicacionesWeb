@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import MaterialAgregar from "./MaterialAgregar";
-import { MaterialesDataTable } from "@/components/DataTable";
+import { DataTable } from "@/components/DataTable";
 import { columns } from "./columns"; // Donde definimos las celdas y el switch
 
 export default async function MaterialesAdminPage() {
@@ -19,7 +19,7 @@ export default async function MaterialesAdminPage() {
             Panel de materiales
           </h1>
           <p className="text-zinc-500 text-sm">
-            Gestiona el inventario de piedras, hilos y metales de <span className="italic font-medium">Kyanite Jewelry</span>.
+            Gestiona el inventario de piedras, hilos y metales de <span className="italic font-medium">Kyanite Artesanal</span>.
           </p>
         </div>
         
@@ -29,7 +29,11 @@ export default async function MaterialesAdminPage() {
 
      
       <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-        <MaterialesDataTable columns={columns} data={materiales} />
+        <DataTable 
+            columns={columns} 
+            data={materiales} 
+            searchKey="nombre" 
+        />
       </div>
       
     </div>

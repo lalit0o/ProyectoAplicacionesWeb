@@ -20,19 +20,15 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  meta?: any 
-  searchKey: string 
+  meta?: any
 }
 
-export function DataTable<TData, TValue>({
+export function ProductoDataTable<TData, TValue>({
   columns,
   data,
-  meta,
-  searchKey,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
@@ -45,23 +41,23 @@ export function DataTable<TData, TValue>({
     state: {
       columnFilters,
     },
-    meta, 
   })
 
   return (
-    <div className="space-y-4 ">
+    <div className="space-y-4">
+     
       <div className="flex items-center">
         <Input
-          placeholder="Buscar..."
-    
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+          placeholder="Buscar material..."
+          value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn(searchKey)?.setFilterValue(event.target.value)
+            table.getColumn("nombre")?.setFilterValue(event.target.value)
           }
-          className="mt-8 max-w-sm border-zinc-150 focus-visible:ring-zinc-800"
+          className="max-w-sm border-zinc-200 focus-visible:ring-zinc-900"
         />
       </div>
 
+     
       <div className="rounded-2xl border border-zinc-200 bg-white overflow-hidden shadow-sm">
         <Table>
           <TableHeader className="bg-zinc-50/50">
@@ -69,7 +65,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="px-6 py-3 text-zinc-900 font-bold" >
+                    <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -86,14 +82,14 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                    key={row.id}
-                    className="group hover:bg-zinc-50/30 transition-colors"
+                  key={row.id}
+                  className="group hover:bg-zinc-50/30 transition-colors"
                 >
-                    {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-6 py-4">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="py-4">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
-                    ))}
+                  ))}
                 </TableRow>
               ))
             ) : (

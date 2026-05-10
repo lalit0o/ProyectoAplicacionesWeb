@@ -2,13 +2,23 @@
 
 import { useState } from "react"
 import ModalKyanite from "@/components/ModalKyanite"
-import MaterialEditForm from "./MaterialForm" 
+import ProductoEditForm from "./ProductoForm" 
 
 interface Props {
-    material: { id: number; nombre: string; categoria?: string } 
+   
+    producto: { 
+        id: number; 
+        titulo: string; 
+        precio: number; 
+        imagenUrl: string;
+        materialesIds: number[]; 
+    };
+
+    materiales: { id: number; nombre: string }[];
 }
 
-export default function MaterialEditar({ material }: Props) {
+
+export default function ProductoEditar({ producto, materiales }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -23,12 +33,13 @@ export default function MaterialEditar({ material }: Props) {
             <ModalKyanite 
                 open={isOpen} 
                 onClose={() => setIsOpen(false)} 
-                titulo="Editar Material"
+                titulo="Editar Producto"
                 variant="formulario"
             >
-                <MaterialEditForm 
-                    material={material}
-                    
+                <ProductoEditForm
+                    producto={producto}
+                   
+                    materialesDisponibles={materiales} 
                     onSuccess={() => setIsOpen(false)} 
                 />
             </ModalKyanite>
