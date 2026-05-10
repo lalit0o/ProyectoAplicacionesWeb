@@ -2,7 +2,6 @@
 
 import Form from 'next/form'
 import { useState } from 'react'
-import { LoginService } from './loginService';
 import Link from 'next/link';
 
 export default function Login() {
@@ -18,17 +17,28 @@ export default function Login() {
         setPassword(event.target.value);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
         if (!email || !password) {
             console.log("Debes ingresar todos los parámetros");
             return;
         }
-        const usuario = { email: email, password: password };
 
-        const res = LoginService({ usuario });
-        console.log(res);
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await res.json();
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
 
 
 
@@ -43,7 +53,7 @@ export default function Login() {
             <h1 className='mb-10 text-2xl text-center'>Iniciar sesión</h1>
 
 
-            <Form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-4">
                     <label >Email:</label>
                     <input
@@ -73,7 +83,7 @@ export default function Login() {
 
 
                 </div>
-            </Form>
+            </form>
         </div>
 
 
