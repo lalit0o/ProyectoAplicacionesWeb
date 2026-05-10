@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { ShoppingBag } from 'lucide-react'
 import { useCartStore } from "@/store/useProductStore";
-import MensajeModal from "@/components/MensajeModal";
+import MensajeModal from "@/components/ModalKyanite";
 import { Button } from "@/components/ui/button";
 
 
@@ -14,6 +14,7 @@ type ProductoType = {
     imagen: string;
     descripcion?: string;
     piedra?: string;
+    categoria: string;
 }
 
 export default function ProductUI({ producto }: { producto: ProductoType }) {
@@ -78,11 +79,15 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                     </div>
 
 
-                    <MensajeModal open={modalOpen} onClose={() => setModalOpen(false)}>
-                        <div className="text-center p-4">
-                            <p className="font-serif text-xl text-zinc-900 mb-2">¡Añadido con éxito!</p>
-                            <p className="text-zinc-600">{producto.titulo} se ha guardado en tu carrito.</p>
-                        </div>
+                    <MensajeModal
+                        open={modalOpen} 
+                        onClose={() => setModalOpen(false)}
+                        variant="anuncio" 
+                        titulo="¡Añadido con éxito!"
+                    >
+                        <p className="text-zinc-600">
+                            {producto.titulo} se ha guardado en tu carrito.
+                        </p>
                     </MensajeModal>
 
                 </div>

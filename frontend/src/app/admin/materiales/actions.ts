@@ -36,16 +36,41 @@ export async function eliminarMaterial(id: number) {
 }   
 
 
-export async function crearMaterial(nombre: string, categoria: string) {
-    try{
+export async function crearMaterial(nombre: string) {
+    try {
         await prisma.material.create({
-            data: { nombre, categoria, enStock: true }
+            data: { 
+                nombre, 
+                enStock: true 
+            }
         });
-        revalidatePath('/admin/materiales')
-        return{success: true};
-    }catch(error){
-        console.error("Error al intentar crear el material:", error)
-        return{success: false, error: "Error al intentar crear el material"};
+        
+        revalidatePath('/admin/materiales');
+        return { success: true };
+    } catch (error) {
+        console.error("Error al intentar crear el material:", error);
+        return { success: false, error: "Error al intentar crear el material" };
+    }
+}
 
+export async function editarMaterial(id: number, formData: FormData) {
+
+    const nombre = formData.get("nombre") as string;
+    // const categoria = formData.get("categoria") as string; 
+
+    try {
+        await prisma.material.update({
+            where: { id },
+            data: { 
+                nombre,
+                // categoria 
+            }
+        });
+        
+        revalidatePath('/admin/materiales');
+        return { success: true };
+    } catch (error) {
+        console.error("Error al intentar editar el material:", error);
+        return { success: false, error: "Error al intentar editar el material" };
     }
 }
