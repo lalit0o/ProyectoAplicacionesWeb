@@ -90,6 +90,8 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                         </p>
                     </MensajeModal>
 
+                    
+
                 </div>
             </div>
         </main>
