@@ -8,7 +8,7 @@ import ModalKyanite from "@/components/ModalKyanite"
 import ProductoForm from "./ProductoForm" 
 
 interface Props {
-    producto: any;
+    producto: any; 
     materialesDisponibles: any[]; 
 }
 

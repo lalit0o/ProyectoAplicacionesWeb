@@ -4,7 +4,7 @@ import {DataTable } from "@/components/DataTable"; // Ajusta tu ruta si es difer
 import { columns } from "@/app/admin/productos/columns";
 
 export default async function ProductosAdminPage() {
-  
+  // Se leen todos los materiales para pasarlos a los formularios de creación y edición
   const materialesDB = await prisma.material.findMany({
       orderBy: { nombre: "asc" }
   });
@@ -20,7 +20,7 @@ export default async function ProductosAdminPage() {
     }
   });
 
-
+ // Se valida que el producto este en stock y que no le falten materiales para considerarlo realmente disponible. 
   const productosMapeados = productosDB.map((producto) => {
 
     const leFaltanMateriales = producto.recetas.some(
@@ -52,7 +52,7 @@ export default async function ProductosAdminPage() {
           </p>
         </div>
         
-      
+    
         <ProductoAgregar materiales={materialesDB} />
       </section>
 
