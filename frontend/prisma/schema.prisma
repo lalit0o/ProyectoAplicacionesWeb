@@ -82,6 +82,7 @@ model Producto {
   id        Int     @id @default(autoincrement())
   titulo    String
   precio    Float
+  categoria String
   imagenUrl String?
   enStock   Boolean @default(true)
 
@@ -95,6 +96,7 @@ model Producto {
 model Material {
   id     Int    @id @default(autoincrement())
   nombre String
+  categoria String
   enStock Boolean  @default(true)
 
   // Relaciones

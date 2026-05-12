@@ -1,48 +1,46 @@
 import CategoriaUI from "@/components/CategoriaUI";
-
-
-interface Articulo {
-    id: number;
-    titulo: string;
-    categoria: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
-}
+import { prisma } from "@/lib/prisma";
+import { Producto } from "@prisma/client";
 
 type Props = {
-    params: Promise<{ categoria: string }>; 
+    params: {
+        categoria: string;
+    };
 };
 
+async function getByCategoria(categoria: string): Promise<Producto[]> {
+    try {
+        if (categoria === "todos") {
+            return await prisma.producto.findMany();
+        }
 
-async function getByCategoria(categoria: string): Promise<Articulo[]> {
-    const articulos: Articulo[] = [
-        { id: 1, titulo: "Anillo Gota de Luna", categoria: "anillos", precio: 850, imagen: '/imagen1.webp', descripcion: "Acero inoxidable con piedra luna." },
-        { id: 2, titulo: "Anillo Karma", categoria: "anillos", precio: 450, imagen: '/imagen1.webp' },
-        { id: 3, titulo: "Anillo Selene", categoria: "anillos", precio: 520, imagen: '/imagen1.webp' },
-        { id: 5, titulo: "Aretes Amatista", categoria: "aretes", precio: 320, imagen: '/imagen2.webp' },
-        { id: 6, titulo: "Aretes Cuarzo Rosa", categoria: "aretes", precio: 320, imagen: '/imagen2.webp' },
-        { id: 8, titulo: "Pulsera Ojo de Tigre", categoria: "pulseras", precio: 600, imagen: '/imagen2.webp' },
-        { id: 11, titulo: "Collar Chakra Garganta", categoria: "chakras", precio: 750, imagen: '/imagen2.webp' },
-       
-    ];
-
-    if (categoria === "todos") return articulos;
-    return articulos.filter(art => art.categoria === categoria);
+        return await prisma.producto.findMany({
+            where: {
+                categoria: categoria
+            }
+        });
+    } catch (error) {
+        console.error("Error al obtener productos: ", error);
+        return [];
+    }
 }
 
 export default async function CategoriaPage({ params }: Props) {
-    
     const { categoria } = await params;
-    
-   
-    const articulos = await getByCategoria(categoria);
+    const productosDB = await getByCategoria(categoria);
 
- 
+    const articulosAdaptados = productosDB.map((producto) => ({
+        id: producto.id,
+        titulo: producto.titulo,
+        categoria: producto.categoria,
+        precio: producto.precio,
+        imagen: producto.imagenUrl ?? '/imagen1.webp',
+    }));
+
     return (
-        <CategoriaUI 
-            articulos={articulos} 
-            tituloCategoria={categoria === "todos" ? "Colección Completa" : categoria} 
+        <CategoriaUI
+            articulos={articulosAdaptados}
+            tituloCategoria={categoria === "todos" ? "Colección completa" : categoria.charAt(0).toUpperCase() + categoria.slice(1)}
         />
     );
 }
