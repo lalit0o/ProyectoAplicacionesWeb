@@ -1,42 +1,37 @@
-import MaterialSwitch from "./MaterialSwitch";
-import { materialesService } from "@/services/materiales.service";
+import { prisma } from "@/lib/prisma";
+import MaterialAgregar from "./MaterialAgregar";
+import { MaterialesDataTable } from "@/components/DataTable";
+import { columns } from "./columns"; // Donde definimos las celdas y el switch
 
 export default async function MaterialesAdminPage() {
- 
-  const materiales = await materialesService.obtenerTodos();
+
+  const materiales = await prisma.material.findMany({
+    orderBy: { nombre: "asc" }
+  });
 
   return (
-    <div className="p-8 space-y-6">
-     
-
-      <div className="bg-white border border-zinc-200 rounded-2xl overflow-hidden shadow-sm">
-        <table className="w-full text-left">
+    <div className="p-8 space-y-8 max-w-5xl mx-auto">
+      
+      
+      <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-100 pb-6">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-serif text-zinc-900 tracking-tigh">
+            Panel de materiales
+          </h1>
+          <p className="text-zinc-500 text-sm">
+            Gestiona el inventario de piedras, hilos y metales de <span className="italic font-medium">Kyanite Jewelry</span>.
+          </p>
+        </div>
         
-          <tbody className="divide-y divide-zinc-100">
-            {materiales.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-zinc-500 italic">
-                  No se encontraron materiales. 
-                </td>
-              </tr>
-            ) : (
-              materiales.map((m) => (
-                <tr key={m.id} className="group hover:bg-zinc-50/50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-zinc-900">{m.nombre}</td>
-                  <td className="px-6 py-4 text-zinc-500 text-sm">{m.categoria}</td>
-                  <td className="px-6 py-4 flex justify-center">
-                    {/* Le pasamos el ID y el stock inicial al Switch */}
-                    <MaterialSwitch id={m.id} initialStock={m.enStock} />
-                  </td>
-                  <td className="px-6 py-4 text-right text-xs text-zinc-400 hover:text-zinc-900 cursor-pointer">
-                    Editar
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      
+        <MaterialAgregar />
+      </section>
+
+     
+      <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <MaterialesDataTable columns={columns} data={materiales} />
       </div>
+      
     </div>
   );
 }
