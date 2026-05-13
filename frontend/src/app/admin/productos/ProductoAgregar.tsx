@@ -4,9 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import ModalKyanite from "@/components/ModalKyanite"
 import ProductoForm from "./ProductoForm"
+import type { Material } from "@/types"
 
 interface Props {
-    materiales: { id: number; nombre: string }[];
+    materiales: Material[]
 }
 
 export default function ProductoAgregar({ materiales }: Props) {
