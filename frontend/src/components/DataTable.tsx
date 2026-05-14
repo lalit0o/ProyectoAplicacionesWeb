@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4 ">
       <div className="flex items-center">
         <Input
-          placeholder="Buscar..."
+          placeholder="Buscar por nombre"
     
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
