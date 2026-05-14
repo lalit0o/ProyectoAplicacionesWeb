@@ -1,12 +1,13 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import type { Producto, Material } from "@/types"
+import type { Producto, Material, CategoriaProducto } from "@/types"
 import ProductoAcciones from "./ProductoAcciones"
 
 
 interface TableMeta {
     materiales: Material[]
+    categorias: CategoriaProducto[]
 }
 
 export const columns: ColumnDef<Producto>[] = [
@@ -77,12 +78,14 @@ export const columns: ColumnDef<Producto>[] = [
 
             const meta = table.options.meta as TableMeta
             const materiales = meta?.materiales ?? []
+            const categorias = meta?.categorias ?? []
 
             return (
                 <div className="text-right px-4">
                     <ProductoAcciones
                         producto={row.original}
                         materialesDisponibles={materiales}
+                        categoriasDisponibles={categorias}
                     />
                 </div>
             )

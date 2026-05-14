@@ -89,7 +89,18 @@ model Producto {
   detalles DetallePedido[]
   recetas  Receta[]
 
+  categoriaId Int?
+  categoria   CategoriaProducto?  @relation(fields: [categoriaId], references: [id])
+
   @@map("productos")
+}
+
+model CategoriaProducto{
+  id Int   @id @default(autoincrement())
+  nombre String @unique
+  productos Producto[]
+
+   @@map("categorias_productos")
 }
 
 model Material {
@@ -100,7 +111,17 @@ model Material {
   // Relaciones
   recetas Receta[]
 
+  categoriaId Int?
+  categoria   CategoriaMaterial? @relation(fields: [categoriaId], references: [id])
   @@map("materiales")
+}
+
+model CategoriaMaterial {
+  id         Int        @id @default(autoincrement())
+  nombre     String     @unique
+  materiales Material[]
+
+  @@map("categorias_materiales")
 }
 
 model DetallePedido {

@@ -62,6 +62,7 @@ export async function editarMaterial(id: number, formData: FormData) {
     const nombre = formData.get("nombre") as string;
     // const categoria = formData.get("categoria") as string; 
 
+    // Vamos a agregar validaciones para el llenado de nombre.
     try {
         await prisma.material.update({
             where: { id },

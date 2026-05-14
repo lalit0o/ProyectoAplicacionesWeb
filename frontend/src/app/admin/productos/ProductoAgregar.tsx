@@ -4,13 +4,14 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import ModalKyanite from "@/components/ModalKyanite"
 import ProductoForm from "./ProductoForm"
-import type { Material } from "@/types"
+import type { Material, CategoriaProducto } from "@/types"
 
 interface Props {
     materiales: Material[]
+    categorias: CategoriaProducto[]
 }
 
-export default function ProductoAgregar({ materiales }: Props) {
+export default function ProductoAgregar({ materiales, categorias }: Props) {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -33,6 +34,7 @@ export default function ProductoAgregar({ materiales }: Props) {
                 <ProductoForm 
                     onSuccess={() => setIsOpen(false)} 
                     materialesDisponibles={materiales} 
+                    categoriasDisponibles={categorias}
                 />
             </ModalKyanite>
 
