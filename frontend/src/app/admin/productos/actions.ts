@@ -31,38 +31,41 @@ export async function eliminarProducto(id: number) {
 
 
 export async function crearProducto(formData: FormData, materialesIds: number[]) {
-    const titulo = formData.get("titulo") as string;
-    const precio = Number(formData.get("precio"));
-    const imagenUrl = formData.get("imagenUrl") as string;
+    const titulo = formData.get("titulo") as string
+    const precio = Number(formData.get("precio"))
+    const imagenUrl = formData.get("imagenUrl") as string || null
+    const categoriaId = formData.get("categoriaId") as string
 
-    if(!titulo || titulo.trim() === ""){
-        return { success: false, error: "El título es obligatorio." }
+    if (!titulo || titulo.trim() === "") {
+        return { success: false, error: "El nombre del producto es obligatorio." }
     }
 
-    if(isNaN(precio) || precio <= 0){
-        return { success: false, error: "El precio debe ser un número positivo." }
+    if (isNaN(precio) || precio <= 0) {
+        return { success: false, error: "El precio debe ser un número mayor a cero." }
     }
 
-    try{
+    try {
         await prisma.producto.create({
-            data:{
+            data: {
                 titulo: titulo.trim(),
                 precio,
                 imagenUrl,
                 enStock: true,
+                categoriaId: categoriaId ? Number(categoriaId) : null,
                 recetas: {
-                    create: materialesIds.map(id=> ({
+                    create: materialesIds.map(id => ({
                         material: { connect: { id } }
                     }))
                 }
             }
         })
-    
+
         revalidatePath('/admin/productos')
         return { success: true }
-    } catch (error){
-        console.error("Error al intentar crear el producto:", error)
-        return { success: false, error: "Error al intentar crear el producto" }
+
+    } catch (error) {
+        console.error("Error al crear el producto:", error)
+        return { success: false, error: "Ocurrió un error al crear el producto." }
     }
 }
 
@@ -73,6 +76,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
+    const categoriaId = formData.get("categoriaId") as string
 
   
     if (!titulo || titulo.trim() === "") {
@@ -99,6 +103,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
                     titulo: titulo.trim(),
                     precio,
                     imagenUrl,
+                    categoriaId: categoriaId ? Number(categoriaId) : null,
                     recetas: {
                         create: materialesIds.map(idMaterial => ({
                             material: { connect: { id: idMaterial } }

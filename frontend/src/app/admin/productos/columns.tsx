@@ -37,6 +37,19 @@ export const columns: ColumnDef<Producto>[] = [
         )
     },
     {
+        accessorFn: (row) => row.categoria?.nombre,
+        header: "Categoría",
+        id: "categoria",
+        cell: ({ row }) => {
+            const categoria = row.original.categoria
+            return (
+                <span className="text-sm text-zinc-700">
+                    {categoria ? categoria.nombre : "Sin categoría"}
+                </span>
+            )
+        }
+    },
+    {
         accessorKey: "stockReal",
         header: () => <div className="text-center">Estado</div>,
         cell: ({ row }) => {
