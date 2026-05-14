@@ -5,7 +5,7 @@ import ModalKyanite from "@/components/ModalKyanite"
 import MaterialEditForm from "./MaterialForm" 
 
 interface Props {
-    material: { id: number; nombre: string }
+    material: { id: number; nombre: string; categoria?: string } 
 }
 
 export default function MaterialEditar({ material }: Props) {
@@ -26,7 +26,6 @@ export default function MaterialEditar({ material }: Props) {
                 titulo="Editar Material"
                 variant="formulario"
             >
-
                 <MaterialEditForm 
                     material={material}
                     

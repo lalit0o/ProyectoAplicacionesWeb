@@ -26,14 +26,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Package className="w-5 h-5" />
             <span className="font-medium">Materiales</span>
           </Link>
-          <Link href="/admin/clientes" className="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 rounded-lg transition-colors">
+          <Link href="/admin/productos" className="flex items-center gap-3 px-4 py-3 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 rounded-lg transition-colors">
             <Users className="w-5 h-5" />
-            <span className="font-medium">Clientes</span>
+            <span className="font-medium">Productos</span>
           </Link>
         </nav>
       </aside>
 
-      {/* CONTENIDO PRINCIPAL */}
+     
       <main className="flex-1 overflow-y-auto">
         {/* Aquí se renderizarán las subpáginas del admin */}
         {children}

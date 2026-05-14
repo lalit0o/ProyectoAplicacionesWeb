@@ -35,7 +35,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/app/admin/materiales/MaterialAgregartsx"  ],
   "exclude": [
     "node_modules"
   ]
