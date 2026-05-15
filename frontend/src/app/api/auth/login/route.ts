@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
 import { cookies } from 'next/headers'
 
-// registro
+// login
 export async function POST(request: Request) {
     try {
         const body = await request.json();
