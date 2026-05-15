@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import type { Material, CategoriaMaterial } from "@/types"
 import MaterialAcciones from "./MaterialAcciones"
 import MaterialSwitch from "./MaterialSwitch"
+import { ArrowUpDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface TableMeta {
     categorias: CategoriaMaterial[]
@@ -20,22 +22,29 @@ export const columns: ColumnDef<Material>[] = [
         )
     },
     {
-        accessorFn: (row) => row.categoria?.nombre,
-        header: "Categoría",
+        accessorKey: "categoria.nombre", 
         id: "categoria",
-        filterFn: (row, id, filterValue) => {
-            const categoriaNombre = row.original.categoria?.nombre ?? "Sin categoría"
-            return categoriaNombre.toLowerCase().includes(filterValue.toLowerCase())
+        header: ({ column }) => {
+            return (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                
+            >
+            <span className="text-sm font-bold text-zinc-950">Categoría</span>
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+            )
         },
         cell: ({ row }) => {
-            const categoria = row.original.categoria
+            const nombre = row.original.categoria?.nombre
             return (
-                <span className="text-sm text-zinc-700">
-                    {categoria ? categoria.nombre : "Sin categoría"}
-                </span>
+            <span className="px-4 text-sm text-zinc-700">
+                {nombre ?? "Sin categoría"}
+            </span>
             )
-        }
-    },
+        },
+        },
     {
         accessorKey: "enStock",
         header: "En Stock",
