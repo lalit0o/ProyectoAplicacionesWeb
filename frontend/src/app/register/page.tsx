@@ -73,7 +73,6 @@ export default function Register() {
                         required />
                     <label>Email:</label>
                     <input
-                        id='email'
                         className='border rounded-lg p-2'
                         type="email"
                         value={email}
@@ -96,7 +95,7 @@ export default function Register() {
                         onChange={handleTelefonoChange}
                         placeholder='123-456-7890'
                         maxLength={10}
-                        />
+                        required />
                 </div>
                 <div className=' flex flex-col justify-center '>
                     <div className='flex justify-center mb-4'>
