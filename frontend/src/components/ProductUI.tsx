@@ -21,11 +21,27 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
 
     const agregarAlCarrito = useCartStore((state) => state.agregarAlCarrito);
     const modalOpen = useCartStore((state) => state.modalOpen);
+    const modalError = useCartStore((state) => state.modalError);
     const setModalOpen = useCartStore((state) => state.setModalOpen);
+    const setModalError = useCartStore((state) => state.setModalError)
 
-    const handleAgregar = () => {
-        agregarAlCarrito(producto);
-        setModalOpen(true);
+    async function handleAgregar() {
+        try {
+            const res = await fetch("/api/cookie", {
+                method: "GET"
+            });
+            const data = await res.json();
+            if (!data) {
+                setModalError(true);
+                return;
+
+            }
+            agregarAlCarrito(producto);
+            setModalOpen(true);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -77,12 +93,23 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                             Añadir al Carrito
                         </Button>
                     </div>
+                    <MensajeModal
+                        open={modalError}
+                        onClose={() => setModalError(false)}
+                        variant="anuncio"
+                        titulo="No puedes agregar al carrito"
+                    >
+                        <p className="text-zinc-600">
+                            Para agregar al carrito, debes iniciar sesión
+                        </p>
+                        
+                    </MensajeModal>
 
 
                     <MensajeModal
-                        open={modalOpen} 
+                        open={modalOpen}
                         onClose={() => setModalOpen(false)}
-                        variant="anuncio" 
+                        variant="anuncio"
                         titulo="¡Añadido con éxito!"
                     >
                         <p className="text-zinc-600">
@@ -90,7 +117,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                         </p>
                     </MensajeModal>
 
-                    
+
 
                 </div>
             </div>

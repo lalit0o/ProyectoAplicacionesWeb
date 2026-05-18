@@ -4,8 +4,12 @@ import Form from 'next/form'
 import { useState } from 'react'
 import { RegisterService } from './registerService';
 import Link from 'next/link';
+import { useCartStore } from '@/store/useProductStore';
 
 export default function Register() {
+
+    const modalOpen = useCartStore((state)=>state.modalOpen);
+    const setModalOpen= useCartStore((state)=>state.setModalOpen);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -38,24 +42,17 @@ export default function Register() {
                 headers:{
                     "content-type":"application/json",
                 },
-                body: JSON.stringify({})
-            })
+                body: JSON.stringify({email,password,nombre,telefono})
+            });
 
             const data= res.json();
-            console.log(data);
+
+            
 
         }catch(error)
         {
             console.log(error);
         }
-
-        
-
-
-
-
-
-
     }
 
     return (<div className=" min-h-screen w-full flex flex-col  items-center">
@@ -64,12 +61,12 @@ export default function Register() {
             <h1 className='mb-10 text-2xl text-center'>Registrarse</h1>
 
 
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} action={''}>
                 <div className="flex flex-col gap-4">
                     <label>Nombre:</label>
                     <input
                         className='border rounded-lg p-2'
-                        type="email"
+                        type="text"
                         value={nombre}
                         onChange={handleNombreChange}
                         placeholder='Ej. Brandon Solis'
@@ -91,7 +88,7 @@ export default function Register() {
                         value={password}
                         onChange={handlePasswordChange}
                         required />
-                    <label>Teléfono:</label>
+                    <label>Teléfono (opcional):</label>
                     <input
                         className='border rounded-lg p-2'
                         type="tel"
@@ -99,7 +96,7 @@ export default function Register() {
                         onChange={handleTelefonoChange}
                         placeholder='123-456-7890'
                         maxLength={10}
-                        required />
+                        />
                 </div>
                 <div className=' flex flex-col justify-center '>
                     <div className='flex justify-center mb-4'>
@@ -107,7 +104,6 @@ export default function Register() {
                     </div>
                     <div className='flex justify-center'>
                         <p>¿Ya tienes una cuenta? <Link className="text-gray-500" href='/login'>Inicia sesión</Link></p>
-
                     </div>
 
 

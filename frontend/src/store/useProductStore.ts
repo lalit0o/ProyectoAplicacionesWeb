@@ -19,7 +19,9 @@ interface Carrito extends Articulo {
 type Store = {
     carrito: Carrito[];
     modalOpen:boolean;
+    modalError:boolean;
     setModalOpen:(value:boolean)=>void;
+    setModalError:(value:boolean)=>void;
     agregarAlCarrito: (producto: Articulo) => void;
     eliminarDelCarrito: (id: number) => void;
     disminuirDelCarrito: (id: number) => void;
@@ -31,9 +33,15 @@ type Store = {
 export const useCartStore = create<Store>()((set, get) => ({
     carrito: [],
     modalOpen:false,
+    modalError: false,
+    modalInicio:false,
 
     setModalOpen: (value)=>{
         set({modalOpen:value})
+    },
+
+    setModalError: (value)=>{
+        set({modalError:value})
     },
     
 

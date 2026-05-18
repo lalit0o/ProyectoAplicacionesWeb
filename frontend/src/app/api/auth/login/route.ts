@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 import {cookies} from 'next/headers'
 
@@ -21,10 +22,12 @@ export async function POST(request: Request) {
         if(!usuario) {
             return NextResponse.json({ message: "No hay un usuario con ese email"}, { status: 400});
         }
-        if(usuario.password !== password)
-        {
-            return NextResponse.json({message:"La contraseña no coincide"},{status:400});
+
+        const coincide = await bcrypt.compare(password,usuario.password)
+        if(!coincide){
+            return NextResponse.json({message:"Las contraseñas no coinciden"},{status:400});
         }
+        
 
         const token = jwt.sign(
             {sub: usuario.nombre, email: usuario.email, rol: usuario.rol },
