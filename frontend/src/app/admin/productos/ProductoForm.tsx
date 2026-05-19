@@ -2,45 +2,45 @@
 
 import { useState, useTransition } from "react"
 import { crearProducto, editarProducto } from "./actions"
-import type {Producto, Material} from "@/types"
+import type { Producto, Material, CategoriaProducto } from "@/types"
 
 interface Props {
     onSuccess: () => void
     producto?: Producto
     materialesDisponibles: Material[]
+    categoriasDisponibles: CategoriaProducto[]
 }
 
-export default function ProductoForm({ onSuccess, producto, materialesDisponibles }: Props) {
+export default function ProductoForm({ onSuccess, producto, materialesDisponibles, categoriasDisponibles }: Props) {
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
-    const esEdicion = !!producto  // Si el producto existe, es edicion, si no, es creacion
+    const esEdicion = !!producto
 
     const handleSubmit = async (formData: FormData) => {
         startTransition(async () => {
-            const materialesIds = formData.getAll("materialesIds").map(id => Number(id)) // Se extraen aqui los materiales para editar o crear
+            const materialesIds = formData.getAll("materialesIds").map(id => Number(id))
 
             const res = esEdicion && producto
-            ? await editarProducto(producto.id, formData, materialesIds)
-            : await crearProducto(formData, materialesIds)
+                ? await editarProducto(producto.id, formData, materialesIds)
+                : await crearProducto(formData, materialesIds)
 
             if (res.success) {
                 onSuccess()
             } else {
                 setErrorMsg(res.error ?? "Error desconocido al procesar el producto.")
             }
-     })
+        })
     }
+
     return (
         <form action={handleSubmit} className="w-full flex flex-col gap-6 pt-2">
 
-          
             {errorMsg && (
                 <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
                     {errorMsg}
                 </div>
             )}
 
-          
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
                     {esEdicion ? "Editar Nombre" : "Nombre del Producto"}
@@ -54,7 +54,6 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                 />
             </div>
 
-       
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
                     {esEdicion ? "Editar Precio" : "Precio del Producto"}
@@ -71,7 +70,6 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                 />
             </div>
 
-       
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
                     {esEdicion ? "Editar URL de Imagen" : "URL de la Imagen"}
@@ -84,7 +82,24 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                 />
             </div>
 
-          
+            <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-zinc-700">
+                    Categoría
+                </label>
+                <select
+                    name="categoriaId"
+                    defaultValue={producto?.categoriaId ?? ""}
+                    className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
+                >
+                    <option value="">Sin categoría</option>
+                    {categoriasDisponibles.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.nombre}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
                     Materiales que utiliza (Receta)
@@ -105,7 +120,6 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                 </div>
             </div>
 
-        
             <button
                 type="submit"
                 disabled={isPending}

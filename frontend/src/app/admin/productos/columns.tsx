@@ -1,12 +1,15 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import type { Producto, Material } from "@/types"
+import type { Producto, Material, CategoriaProducto } from "@/types"
 import ProductoAcciones from "./ProductoAcciones"
+import { ArrowUpDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 
 interface TableMeta {
     materiales: Material[]
+    categorias: CategoriaProducto[]
 }
 
 export const columns: ColumnDef<Producto>[] = [
@@ -34,6 +37,30 @@ export const columns: ColumnDef<Producto>[] = [
                 {row.getValue("titulo")}
             </span>
         )
+    },
+    {
+    accessorKey: "categoria.nombre", 
+    id: "categoria",
+    header: ({ column }) => {
+        return (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            
+        >
+        <span className="text-sm font-bold text-zinc-950">Categoría</span>
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+        )
+    },
+    cell: ({ row }) => {
+        const nombre = row.original.categoria?.nombre
+        return (
+        <span className="px-4 text-sm text-zinc-700">
+            {nombre ?? "Sin categoría"}
+        </span>
+        )
+    },
     },
     {
         accessorKey: "stockReal",
@@ -77,12 +104,14 @@ export const columns: ColumnDef<Producto>[] = [
 
             const meta = table.options.meta as TableMeta
             const materiales = meta?.materiales ?? []
+            const categorias = meta?.categorias ?? []
 
             return (
                 <div className="text-right px-4">
                     <ProductoAcciones
                         producto={row.original}
                         materialesDisponibles={materiales}
+                        categoriasDisponibles={categorias}
                     />
                 </div>
             )

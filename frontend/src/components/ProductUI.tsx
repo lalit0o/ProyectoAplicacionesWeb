@@ -8,24 +8,41 @@ import { Button } from "@/components/ui/button";
 
 
 type ProductoType = {
-    id: number;
-    titulo: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
-    piedra?: string;
-    categoria: string;
+    id:number;
+    titulo:string;
+    descripcion:string;
+    precio:number;
+    imagenUrl?:string;
+    enStock:boolean;
+    categoria?:string;
+    categoriaId?:number;
 }
 
 export default function ProductUI({ producto }: { producto: ProductoType }) {
 
     const agregarAlCarrito = useCartStore((state) => state.agregarAlCarrito);
     const modalOpen = useCartStore((state) => state.modalOpen);
+    const modalError = useCartStore((state) => state.modalError);
     const setModalOpen = useCartStore((state) => state.setModalOpen);
+    const setModalError = useCartStore((state) => state.setModalError)
 
-    const handleAgregar = () => {
-        agregarAlCarrito(producto);
-        setModalOpen(true);
+    async function handleAgregar() {
+        try {
+            const res = await fetch("/api/cookie", {
+                method: "GET"
+            });
+            const data = await res.json();
+            if (!data) {
+                setModalError(true);
+                return;
+
+            }
+            agregarAlCarrito(producto);
+            setModalOpen(true);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -38,7 +55,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
 
                 <div className="relative aspect-square w-full bg-zinc-50 rounded-sm overflow-hidden">
                     <Image
-                        src={producto.imagen || '/vestido.png'}
+                        src={ '/vestido.png'}
                         fill
                         sizes="(max-width: 9504px) 100vw, 50vw"
                         className="object-cover"
@@ -77,12 +94,23 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                             Añadir al Carrito
                         </Button>
                     </div>
+                    <MensajeModal
+                        open={modalError}
+                        onClose={() => setModalError(false)}
+                        variant="anuncio"
+                        titulo="No puedes agregar al carrito"
+                    >
+                        <p className="text-zinc-600">
+                            Para agregar al carrito, debes iniciar sesión
+                        </p>
+                        
+                    </MensajeModal>
 
 
                     <MensajeModal
-                        open={modalOpen} 
+                        open={modalOpen}
                         onClose={() => setModalOpen(false)}
-                        variant="anuncio" 
+                        variant="anuncio"
                         titulo="¡Añadido con éxito!"
                     >
                         <p className="text-zinc-600">
@@ -90,7 +118,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
                         </p>
                     </MensajeModal>
 
-                    
+
 
                 </div>
             </div>

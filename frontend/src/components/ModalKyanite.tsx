@@ -40,16 +40,16 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
             aria-label={titulo}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4"
         >
-            
+
             <div
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
                 onClick={onClose}
             />
 
-            
+
             <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8 z-10 animate-in fade-in zoom-in-95 duration-200">
 
-                
+
                 <Button
                     variant="ghost"
                     size="icon"
@@ -60,21 +60,19 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                     <X className="h-5 w-5" />
                 </Button>
 
-                
+
                 {titulo && (
-                    <h2 className={`mb-4 w-full ${
-                        variant === "anuncio"
+                    <h2 className={`mb-4 w-full ${variant === "anuncio"
                             ? "font-serif text-2xl text-zinc-900 text-center"
                             : "font-sans text-xl font-bold text-zinc-800 text-left"
-                    }`}>
+                        }`}>
                         {titulo}
                     </h2>
                 )}
 
-              
-                <div className={`mt-2 flex flex-col ${
-                    variant === "anuncio" ? "items-center" : "items-start"
-                }`}>
+
+                <div className={`mt-2 flex flex-col ${variant === "anuncio" ? "items-center" : "items-start"
+                    }`}>
                     <div className="w-full text-left">
                         {children}
                     </div>

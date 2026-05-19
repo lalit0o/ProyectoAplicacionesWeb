@@ -22,7 +22,9 @@ export async function POST(request: Request) {
 
         const existeUsuario = await prisma.usuario.findUnique({
             where: { email }
+
         });
+        console.log(existeUsuario);
 
         if(existeUsuario) {
             return NextResponse.json({ message: "El correo ya esta en uso"}, { status: 400});

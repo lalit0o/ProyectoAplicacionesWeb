@@ -1,12 +1,16 @@
 'use client'
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import ModalKyanite from "@/components/ModalKyanite"
 import MaterialForm from "./MaterialForm"
+import type { CategoriaMaterial } from "@/types"
 
+interface Props {
+    categorias: CategoriaMaterial[]
+}
 
-export default function MaterialAgregar() {
-
+export default function MaterialAgregar({ categorias }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -20,16 +24,15 @@ export default function MaterialAgregar() {
 
             <ModalKyanite
                 open={isOpen}
-                onClose={() => setIsOpen(false)} 
+                onClose={() => setIsOpen(false)}
                 variant="formulario"
                 titulo="Nuevo Material para Kyanite"
             >
-                <MaterialForm onSuccess={() => setIsOpen(false)} />
-
+                <MaterialForm
+                    categoriasDisponibles={categorias}
+                    onSuccess={() => setIsOpen(false)}
+                />
             </ModalKyanite>
-
         </>
-
     )
-
 }

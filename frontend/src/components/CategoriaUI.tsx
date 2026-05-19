@@ -1,13 +1,14 @@
 import Articulo from "@/components/Articulo";
+import ListaCategorias from "./ui/Categorias";
 
 type ArticuloType = {
-    id: number;
-    titulo: string;
-    categoria: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
-    esNuevo?: boolean;
+    id:number;
+    titulo:string;
+    precio:number;
+    imagenUrl?:string;
+    enStock:boolean;
+    categoria?:string;
+    categoriaId?:number;
 }
 
 type Props = {
@@ -27,6 +28,8 @@ export default function CategoriaUI({ articulos, tituloCategoria = "Nuestra Cole
                 <h1 className="text-4xl font-serif text-zinc-900 mb-6 capitalize">
                     {tituloCategoria}
                 </h1>
+                <p></p>
+                <ListaCategorias/>
 
                 <div className="h-px w-24 bg-zinc-200" />
             </div>

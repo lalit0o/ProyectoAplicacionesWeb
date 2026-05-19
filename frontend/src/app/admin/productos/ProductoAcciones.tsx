@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Trash2, Edit } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import type {Producto, Material} from "@/types"
+import type {Producto, Material, CategoriaProducto} from "@/types"
 import ModalKyanite from "@/components/ModalKyanite"
 import ProductoForm from "./ProductoForm" 
 import ProductoEliminar from "./ProductoEliminar"
@@ -11,9 +11,10 @@ import ProductoEliminar from "./ProductoEliminar"
 interface Props {
     producto: Producto; 
     materialesDisponibles: Material[]; 
+    categoriasDisponibles: CategoriaProducto[]
 }
 
-export default function ProductoAcciones({ producto, materialesDisponibles }: Props){
+export default function ProductoAcciones({ producto, materialesDisponibles, categoriasDisponibles }: Props){
     const [modalActivo, setModalActivo] = useState<"editar" | "eliminar" | null>(null)
 
     return (
@@ -41,6 +42,7 @@ export default function ProductoAcciones({ producto, materialesDisponibles }: Pr
                 <ProductoForm 
                     producto={producto} 
                     materialesDisponibles={materialesDisponibles} 
+                    categoriasDisponibles={categoriasDisponibles}
                     onSuccess={() => setModalActivo(null)} 
                 />
             </ModalKyanite>

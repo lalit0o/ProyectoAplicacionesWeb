@@ -61,11 +61,11 @@ model Direccion {
 }
 
 model Pedido {
-  id          Int        @id @default(autoincrement())
-  usuarioId   Int
-  usuario     Usuario    @relation(fields: [usuarioId], references: [id])
-  direccionId Int?
-  direccion   Direccion? @relation(fields: [direccionId], references: [id])
+  id            Int           @id @default(autoincrement())
+  usuarioId     Int
+  usuario       Usuario       @relation(fields: [usuarioId], references: [id])
+  direccionId   Int?
+  direccion     Direccion?    @relation(fields: [direccionId], references: [id])
   total         Float
   metodoEntrega MetodoEntrega
   estadoPedido  EstadoPedido  @default(PENDIENTE)
@@ -79,30 +79,67 @@ model Pedido {
 }
 
 model Producto {
+<<<<<<< HEAD
   id        Int     @id @default(autoincrement())
   titulo    String
   precio    Float
   categoria String
   imagenUrl String?
   enStock   Boolean @default(true)
+=======
+  id          Int     @id @default(autoincrement())
+  titulo      String
+  descripcion String  @default("Sin descripción")
+  precio      Float
+  imagenUrl   String?
+  enStock     Boolean @default(true)
+>>>>>>> 77fe75b4f016eb3d1bb80dc47651fb68012df41b
 
   // Relaciones
   detalles DetallePedido[]
   recetas  Receta[]
 
+  categoriaId Int?
+  categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [id])
+
   @@map("productos")
 }
 
+model CategoriaProducto {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  productos Producto[]
+
+  @@map("categorias_productos")
+}
+
 model Material {
+<<<<<<< HEAD
   id     Int    @id @default(autoincrement())
   nombre String
   categoria String
   enStock Boolean  @default(true)
+=======
+  id      Int     @id @default(autoincrement())
+  nombre  String
+  enStock Boolean @default(true)
+>>>>>>> 77fe75b4f016eb3d1bb80dc47651fb68012df41b
 
   // Relaciones
   recetas Receta[]
 
+  categoriaId Int?
+  categoria   CategoriaMaterial? @relation(fields: [categoriaId], references: [id])
+
   @@map("materiales")
+}
+
+model CategoriaMaterial {
+  id         Int        @id @default(autoincrement())
+  nombre     String     @unique
+  materiales Material[]
+
+  @@map("categorias_materiales")
 }
 
 model DetallePedido {
