@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { crearProducto, editarProducto } from "./actions"
+import ImageUpload from "./ImageUpload"
 import type { Producto, Material, CategoriaProducto } from "@/types"
 
 interface Props {
@@ -14,9 +15,17 @@ interface Props {
 export default function ProductoForm({ onSuccess, producto, materialesDisponibles, categoriasDisponibles }: Props) {
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
+    const [imagenUrl, setImagenUrl] = useState<string | null>(producto?.imagenUrl || null)
     const esEdicion = !!producto
 
     const handleSubmit = async (formData: FormData) => {
+        if (!imagenUrl) {
+            setErrorMsg("Debes subir una imagen del producto.")
+            return
+        }
+
+        formData.set("imagenUrl", imagenUrl)
+
         startTransition(async () => {
             const materialesIds = formData.getAll("materialesIds").map(id => Number(id))
 
@@ -40,6 +49,16 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                     {errorMsg}
                 </div>
             )}
+
+            <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-zinc-700">
+                    Imagen del Producto
+                </label>
+                <ImageUpload
+                    imagenActual={imagenUrl}
+                    onImagenSubida={setImagenUrl}
+                />
+            </div>
 
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
@@ -67,18 +86,6 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                     placeholder="Ej. 499.99"
                     className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
                     required
-                />
-            </div>
-
-            <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-zinc-700">
-                    {esEdicion ? "Editar URL de Imagen" : "URL de la Imagen"}
-                </label>
-                <input
-                    name="imagenUrl"
-                    defaultValue={producto?.imagenUrl ?? ""}
-                    placeholder="https://ejemplo.com/anillo.jpg"
-                    className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
                 />
             </div>
 
