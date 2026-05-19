@@ -21,30 +21,13 @@ export function middleware(request: NextRequest) {
 
 }
 
-function validarAdmin(token: string | undefined, request: NextRequest) {
-    if (!token) {
-        return NextResponse.redirect(
-            new URL("/login", request.url)
+function validarAdmin(
+    token: string | undefined,
+    request: NextRequest
+) {
 
-        );
-    }
+    console.log("ENTRO VALIDAR");
+    console.log(token);
 
-    try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET!) as Payload;
-
-        if (payload.rol !== "ADMIN") {
-            return NextResponse.redirect(
-                new URL("/login", request.url)
-            );
-        }
-
-        return NextResponse.next();
-
-    } catch (error) {
-        console.log(error);
-        return NextResponse.redirect(
-            new URL("/login", request.url)
-        );
-    }
-
+    return NextResponse.next();
 }

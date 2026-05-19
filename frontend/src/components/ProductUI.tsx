@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/button";
 
 
 type ProductoType = {
-    id: number;
-    titulo: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
-    piedra?: string;
-    categoria: string;
+    id:number;
+    titulo:string;
+    descripcion:string;
+    precio:number;
+    imagenUrl?:string;
+    enStock:boolean;
+    categoria?:string;
+    categoriaId?:number;
 }
 
 export default function ProductUI({ producto }: { producto: ProductoType }) {
@@ -54,7 +55,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
 
                 <div className="relative aspect-square w-full bg-zinc-50 rounded-sm overflow-hidden">
                     <Image
-                        src={producto.imagen || '/vestido.png'}
+                        src={ '/vestido.png'}
                         fill
                         sizes="(max-width: 9504px) 100vw, 50vw"
                         className="object-cover"

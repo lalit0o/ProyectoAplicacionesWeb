@@ -6,6 +6,7 @@ export default async function ListaCategorias() {
 
     return (
         <div className="flex gap-5">
+            <Link href={"/categoria/todos"}>Todos</Link>
             {categorias.map((categoria) => (
                 <Link
                     key={categoria.id}
