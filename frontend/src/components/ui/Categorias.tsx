@@ -11,7 +11,7 @@ export default async function ListaCategorias() {
                 <Link
                     key={categoria.id}
                     href={`/categoria/${categoria.nombre}`}
-                className="capitalize">
+                    className="capitalize">
                     {categoria.nombre}
                 </Link>
             ))}

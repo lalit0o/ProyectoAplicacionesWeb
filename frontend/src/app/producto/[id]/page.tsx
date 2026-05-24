@@ -1,6 +1,7 @@
 import ProductUI from "@/components/ProductUI";
 import { notFound } from "next/navigation";
 import { obtenerArticulos } from "@/lib/articulos"
+import { obtenerId } from "@/lib/articuloId";
 
 
 interface Articulo {
@@ -15,16 +16,10 @@ interface Articulo {
 }
 
 type Props = {
-    params: Promise<{ id: string }>;
+    params: Promise<{ id: any}>;
 };
 
 
-async function getArticuloById(id: string): Promise<Articulo | undefined> {
-    const articulos = await obtenerArticulos();
-
-
-    return articulos.find(art => art.id == Number(id));
-}
 
 
 export default async function ProductPage({ params }: Props) {
@@ -32,7 +27,7 @@ export default async function ProductPage({ params }: Props) {
     const { id } = await params;
 
 
-    const articulo = await getArticuloById(id);
+    const articulo = await obtenerId(id);
 
 
     if (!articulo) {
