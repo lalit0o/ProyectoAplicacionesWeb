@@ -3,16 +3,24 @@
 import { useState, useTransition } from "react"
 import { crearProducto, editarProducto } from "./actions"
 import ImageUpload from "./ImageUpload"
-import type { Producto, Material, CategoriaProducto } from "@/types"
+import MaterialCategoria from "../materiales/MaterialCategoria"
+import type { Producto, Material, CategoriaProducto, CategoriaMaterial } from "@/types"
 
 interface Props {
     onSuccess: () => void
     producto?: Producto
     materialesDisponibles: Material[]
     categoriasDisponibles: CategoriaProducto[]
+    categoriasMaterialDisponibles: CategoriaMaterial[] 
 }
 
-export default function ProductoForm({ onSuccess, producto, materialesDisponibles, categoriasDisponibles }: Props) {
+export default function ProductoForm({ 
+    onSuccess, 
+    producto, 
+    materialesDisponibles,
+    categoriasDisponibles,
+    categoriasMaterialDisponibles
+}: Props) {
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
     const [imagenUrl, setImagenUrl] = useState<string | null>(producto?.imagenUrl || null)
@@ -50,83 +58,109 @@ export default function ProductoForm({ onSuccess, producto, materialesDisponible
                 </div>
             )}
 
-            <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-zinc-700">
-                    Imagen del Producto
-                </label>
-                <ImageUpload
-                    imagenActual={imagenUrl}
-                    onImagenSubida={setImagenUrl}
-                />
+            
+            <div className="flex gap-6">
+
+                }
+                <div className="flex-shrink-0 w-56">
+                    <label className="text-sm font-semibold text-zinc-700 block mb-2">
+                        Imagen del Producto
+                    </label>
+                    <ImageUpload
+                        imagenActual={imagenUrl}
+                        onImagenSubida={setImagenUrl}
+                    />
+                </div>
+
+                
+                <div className="flex-1 flex flex-col gap-4">
+
+                    
+                    <div className="grid grid-cols-2 gap-4">
+
+                        
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-zinc-700">
+                                {esEdicion ? "Editar Nombre" : "Nombre del Producto"}
+                            </label>
+                            <input
+                                name="titulo"
+                                defaultValue={producto?.titulo ?? ""}
+                                placeholder="Ej. Collar de Cuarzo"
+                                className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
+                                required
+                            />
+                        </div>
+
+                        
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-zinc-700">
+                                {esEdicion ? "Editar Precio" : "Precio del Producto"}
+                            </label>
+                            <input
+                                name="precio"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                defaultValue={producto?.precio ?? ""}
+                                placeholder="Ej. 499.99"
+                                className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
+                                required
+                            />
+                        </div>
+
+                       
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-zinc-700">
+                                Categoría
+                            </label>
+                            <select
+                                name="categoriaId"
+                                defaultValue={producto?.categoriaId ?? ""}
+                                className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
+                            >
+                                <option value="">Sin categoría</option>
+                                {categoriasDisponibles.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.nombre}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                    </div>
+
+                    
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-zinc-700">
+                            Descripción del Producto
+                        </label>
+                        <textarea
+                            name="descripcion"
+                            defaultValue={producto?.descripcion || ""}
+                            placeholder="Describe los detalles, características, materiales especiales..."
+                            className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50 resize-none"
+                            rows={2}
+                        />
+                    </div>
+
+                </div>
+
             </div>
 
-            <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-zinc-700">
-                    {esEdicion ? "Editar Nombre" : "Nombre del Producto"}
-                </label>
-                <input
-                    name="titulo"
-                    defaultValue={producto?.titulo ?? ""}
-                    placeholder="Ej. Collar de Cuarzo"
-                    className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
-                    required
-                />
-            </div>
-
-            <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-zinc-700">
-                    {esEdicion ? "Editar Precio" : "Precio del Producto"}
-                </label>
-                <input
-                    name="precio"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    defaultValue={producto?.precio ?? ""}
-                    placeholder="Ej. 499.99"
-                    className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
-                    required
-                />
-            </div>
-
-            <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-zinc-700">
-                    Categoría
-                </label>
-                <select
-                    name="categoriaId"
-                    defaultValue={producto?.categoriaId ?? ""}
-                    className="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-zinc-50/50"
-                >
-                    <option value="">Sin categoría</option>
-                    {categoriasDisponibles.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.nombre}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
+            
             <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-zinc-700">
                     Materiales que utiliza (Receta)
                 </label>
-                <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto p-3 border border-zinc-200 rounded-xl bg-zinc-50/50">
-                    {materialesDisponibles.map((mat) => (
-                        <label key={mat.id} className="flex items-center gap-2 text-sm cursor-pointer hover:text-zinc-900 text-zinc-700 transition-colors">
-                            <input
-                                type="checkbox"
-                                name="materialesIds"
-                                value={mat.id}
-                                defaultChecked={producto?.materialesIds?.includes(mat.id)}
-                                className="accent-zinc-900 w-4 h-4 rounded cursor-pointer"
-                            />
-                            {mat.nombre}
-                        </label>
-                    ))}
-                </div>
+                <MaterialCategoria
+                    materialesDisponibles={materialesDisponibles}
+                    categoriasDisponibles={categoriasMaterialDisponibles}
+                    valoresSeleccionados={producto?.materialesIds}
+                />
             </div>
 
+           
             <button
                 type="submit"
                 disabled={isPending}

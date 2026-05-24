@@ -43,6 +43,7 @@ export async function crearProducto(formData: FormData, materialesIds: number[])
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
+    const descripcion = formData.get("descripcion") as string || null
     const categoriaId = formData.get("categoriaId") as string
 
     if (!titulo || titulo.trim() === "") {
@@ -59,6 +60,7 @@ export async function crearProducto(formData: FormData, materialesIds: number[])
                 titulo: titulo.trim(),
                 precio,
                 imagenUrl,
+                descripcion: descripcion?.trim() || null,
                 enStock: true,
                 categoriaId: categoriaId ? Number(categoriaId) : null,
                 recetas: {
@@ -85,6 +87,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
+    const descripcion = formData.get("descripcion") as string || null
     const categoriaId = formData.get("categoriaId") as string
 
   
@@ -112,6 +115,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
                     titulo: titulo.trim(),
                     precio,
                     imagenUrl,
+                    descripcion: descripcion?.trim() || null,
                     categoriaId: categoriaId ? Number(categoriaId) : null,
                     recetas: {
                         create: materialesIds.map(idMaterial => ({
