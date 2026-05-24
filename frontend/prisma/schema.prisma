@@ -79,21 +79,12 @@ model Pedido {
 }
 
 model Producto {
-<<<<<<< HEAD
-  id        Int     @id @default(autoincrement())
-  titulo    String
-  precio    Float
-  categoria String
-  imagenUrl String?
-  enStock   Boolean @default(true)
-=======
   id          Int     @id @default(autoincrement())
   titulo      String
   descripcion String  @default("Sin descripción")
   precio      Float
   imagenUrl   String?
   enStock     Boolean @default(true)
->>>>>>> 77fe75b4f016eb3d1bb80dc47651fb68012df41b
 
   // Relaciones
   detalles DetallePedido[]
@@ -114,16 +105,9 @@ model CategoriaProducto {
 }
 
 model Material {
-<<<<<<< HEAD
-  id     Int    @id @default(autoincrement())
-  nombre String
-  categoria String
-  enStock Boolean  @default(true)
-=======
   id      Int     @id @default(autoincrement())
   nombre  String
   enStock Boolean @default(true)
->>>>>>> 77fe75b4f016eb3d1bb80dc47651fb68012df41b
 
   // Relaciones
   recetas Receta[]
