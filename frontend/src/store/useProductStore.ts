@@ -3,14 +3,14 @@ import { create } from 'zustand'
 
 
 interface Articulo {
-    id:number;
-    titulo:string;
-    descripcion:string;
-    precio:number;
-    imagenUrl?:string;
-    enStock:boolean;
-    categoria?:string;
-    categoriaId?:number;
+    id: number;
+    titulo: string;
+    descripcion: string;
+    precio: number;
+    imagenUrl?: string;
+    enStock: boolean;
+    categoria?: string;
+    categoriaId?: number;
 }
 
 interface Carrito extends Articulo {
@@ -20,32 +20,34 @@ interface Carrito extends Articulo {
 
 type Store = {
     carrito: Carrito[];
-    modalOpen:boolean;
-    modalError:boolean;
-    setModalOpen:(value:boolean)=>void;
-    setModalError:(value:boolean)=>void;
+    modalOpen: boolean;
+    modalError: boolean;
+    setModalOpen: (value: boolean) => void;
+    setModalError: (value: boolean) => void;
     agregarAlCarrito: (producto: Articulo) => void;
     eliminarDelCarrito: (id: number) => void;
     disminuirDelCarrito: (id: number) => void;
     aumentarDelCarrito: (id: number) => void;
+    vaciarCarrito: () => void;
 
 }
 
 
 export const useCartStore = create<Store>()((set, get) => ({
+    vaciarCarrito: () => set({ carrito: [] }),
     carrito: [],
-    modalOpen:false,
+    modalOpen: false,
     modalError: false,
-    modalInicio:false,
+    modalInicio: false,
 
-    setModalOpen: (value)=>{
-        set({modalOpen:value})
+    setModalOpen: (value) => {
+        set({ modalOpen: value })
     },
 
-    setModalError: (value)=>{
-        set({modalError:value})
+    setModalError: (value) => {
+        set({ modalError: value })
     },
-    
+
 
     agregarAlCarrito: (producto) => {
         const carrito = get().carrito;
@@ -117,12 +119,5 @@ export const useCartStore = create<Store>()((set, get) => ({
             )
         })
     }
-
-
-
-
-
-
-
 
 }))

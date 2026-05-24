@@ -3,14 +3,19 @@
 import { useCartStore } from "@/store/useProductStore";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
+import { Trash2, CheckCircle2} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import DireccionForm from "@/app/direccion/page";
+import { useState } from "react";
 
 export default function CarritoUI() {
 
     const carrito = useCartStore((state) => state.carrito);
     const eliminarCarrito = useCartStore((state) => state.eliminarDelCarrito);
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [pedidoTerminado, setPedidoTerminado] = useState(false);
+    const vaciarCarrito = useCartStore((state) => state.vaciarCarrito);
 
     const total = carrito.reduce((acumulador, articulo) => acumulador + articulo.precio, 0);
 
@@ -22,6 +27,25 @@ export default function CarritoUI() {
                 <Link href="/">
                     <Button className="bg-zinc-900 text-white hover:bg-zinc-800">
                         Volver al Catálogo
+                    </Button>
+                </Link>
+            </div>
+        );
+    }
+
+    const handlePedidoExitoso = () => { setMostrarModal(false); setPedidoTerminado(true); vaciarCarrito();}
+
+    if (pedidoTerminado) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in duration-500">
+                <CheckCircle2 className="w-20 h-20 text-green-500 mb-6" />
+                <h2 className="text-3xl font-serif text-zinc-900 mb-4">Pedido guardado exitosamente</h2>
+                <p className="text-zinc-500 mb-8 max-w-md">
+                    Tu orden está siendo procesada y se ha guardado en tu cuenta. Puedes ver los detalles en el apartado de "Mis pedidos".
+                </p>
+                <Link href="/">
+                    <Button className="bg-zinc-900 text-white hover:bg-zinc-800 text-lg py-6 px-8 rounded-xl">
+                        Seguir comprando
                     </Button>
                 </Link>
             </div>
@@ -88,9 +112,19 @@ export default function CarritoUI() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800 text-lg py-6">
+                        <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800 text-lg py-6" onClick={() => setMostrarModal(true)}>
                             Realizar pedido
                         </Button>
+                        {mostrarModal && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                                <div className="relative w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+                                    <button onClick={() => setMostrarModal(false)} className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900 transition-colors">
+                                        ✕
+                                    </button>
+                                    <DireccionForm onClose={() => setMostrarModal(false)} onSuccess={handlePedidoExitoso}  carrito={carrito} total={total}/>
+                                </div>
+                            </div>
+                        )}
                     </CardFooter>
                     <CardFooter className="text-center text-sm text-zinc-500">
                         <p>Al hacer clic en "Realizar pedido", podrás tener el seguimiento del mismo en el apartado de "Mis pedidos".</p>
