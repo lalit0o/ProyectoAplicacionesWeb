@@ -3,12 +3,14 @@ import { create } from 'zustand'
 
 
 interface Articulo {
-    id: number;
-    titulo: string;
-    categoria: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
+    id:number;
+    titulo:string;
+    descripcion:string;
+    precio:number;
+    imagenUrl?:string;
+    enStock:boolean;
+    categoria?:string;
+    categoriaId?:number;
 }
 
 interface Carrito extends Articulo {

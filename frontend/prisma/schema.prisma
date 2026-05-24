@@ -61,11 +61,11 @@ model Direccion {
 }
 
 model Pedido {
-  id          Int        @id @default(autoincrement())
-  usuarioId   Int
-  usuario     Usuario    @relation(fields: [usuarioId], references: [id])
-  direccionId Int?
-  direccion   Direccion? @relation(fields: [direccionId], references: [id])
+  id            Int           @id @default(autoincrement())
+  usuarioId     Int
+  usuario       Usuario       @relation(fields: [usuarioId], references: [id])
+  direccionId   Int?
+  direccion     Direccion?    @relation(fields: [direccionId], references: [id])
   total         Float
   metodoEntrega MetodoEntrega
   estadoPedido  EstadoPedido  @default(PENDIENTE)
@@ -79,40 +79,42 @@ model Pedido {
 }
 
 model Producto {
-  id        Int     @id @default(autoincrement())
-  titulo    String
-  precio    Float
-  imagenUrl String?
-  enStock   Boolean @default(true)
+  id          Int     @id @default(autoincrement())
+  titulo      String
+  descripcion String  @default("Sin descripción")
+  precio      Float
+  imagenUrl   String?
+  enStock     Boolean @default(true)
 
   // Relaciones
   detalles DetallePedido[]
   recetas  Receta[]
 
   categoriaId Int?
-  categoria   CategoriaProducto?  @relation(fields: [categoriaId], references: [id])
+  categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [id])
 
   @@map("productos")
 }
 
-model CategoriaProducto{
-  id Int   @id @default(autoincrement())
-  nombre String @unique
+model CategoriaProducto {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
   productos Producto[]
 
-   @@map("categorias_productos")
+  @@map("categorias_productos")
 }
 
 model Material {
-  id     Int    @id @default(autoincrement())
-  nombre String
-  enStock Boolean  @default(true)
+  id      Int     @id @default(autoincrement())
+  nombre  String
+  enStock Boolean @default(true)
 
   // Relaciones
   recetas Receta[]
 
   categoriaId Int?
   categoria   CategoriaMaterial? @relation(fields: [categoriaId], references: [id])
+
   @@map("materiales")
 }
 

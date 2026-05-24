@@ -42,12 +42,22 @@ export default function Login() {
                 },
                 body: JSON.stringify({ email, password }),
             });
+            const data = await res.json();
+
             if (res.status === 200) {
-                setModalOpen(true);
-                setTimeout(() => {
+                if (!(data.rol == "ADMIN")) {
+                    setModalOpen(true);
+                    setTimeout(() => {
+                        window.location.reload();
+                        window.location.assign("/");
+                    }, 1000)
+
+                }
+                else {
                     window.location.reload();
-                    window.location.assign("/categoria/todos");
-                }, 1000)
+                    window.location.assign("/admin");
+                }
+
 
             }
 

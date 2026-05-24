@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { User } from 'lucide-react';
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
 import MensajeModal from "@/components/ModalKyanite";
 import { useCartStore } from "@/store/useProductStore";
 
@@ -22,7 +21,6 @@ export default function UserProfile() {
 
     const modalOpen = useCartStore((state) => state.modalOpen);
     const setModalOpen = useCartStore((state) => state.setModalOpen);
-    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
     const [data, setData] = useState<Token | null>(null);

@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 
 type ArticuloType = {
-    id: number;
-    titulo: string;
-    precio: number;
-    imagen: string;
-    descripcion?: string;
-    esNuevo?: boolean;
+    id:number;
+    titulo:string;
+    precio:number;
+    imagenUrl?:string;
+    enStock:boolean;
+    categoria?:string;
+    categoriaId?:number;
 }
 
 type Props = {
@@ -26,15 +26,11 @@ export default function Articulo({ articulo }: Props) {
 
                 <div className="relative aspect-square bg-zinc-50 overflow-hidden">
 
-                    {articulo.esNuevo && (
-                        <Badge className="absolute top-3 left-3 z-10 bg-zinc-900 text-white hover:bg-zinc-800">
-                            Nuevo
-                        </Badge>
-                    )}
+                    
 
 
                     <Image
-                        src={articulo.imagen || '/vestido.png'}
+                        src={'/vestido.png'}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                         alt={`Fotografía de ${articulo.titulo}`}
