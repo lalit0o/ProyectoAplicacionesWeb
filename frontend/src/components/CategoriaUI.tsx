@@ -12,8 +12,8 @@ type ArticuloType = {
 }
 
 type Props = {
-    articulos: ArticuloType[];
-    tituloCategoria?: string;
+    articulos?: ArticuloType[];
+    tituloCategoria?: string |any;
 }
 
 export default function CategoriaUI({ articulos, tituloCategoria = "Nuestra Colección" }: Props) {
@@ -28,7 +28,6 @@ export default function CategoriaUI({ articulos, tituloCategoria = "Nuestra Cole
                 <h1 className="text-4xl font-serif text-zinc-900 mb-6 capitalize">
                     {tituloCategoria}
                 </h1>
-                <p></p>
                 <ListaCategorias/>
 
                 <div className="h-px w-24 bg-zinc-200" />

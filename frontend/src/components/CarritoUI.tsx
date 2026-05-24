@@ -65,7 +65,7 @@ export default function CarritoUI() {
 
                         <div className="relative h-24 w-24 bg-zinc-50 rounded-md overflow-hidden flex-shrink-0">
                             <Image
-                                src={art.imagen || '/vestido.png'}
+                                src={art.imagenUrl || '/vestido.png'}
                                 fill
                                 sizes="96px"
                                 alt={art.titulo}
