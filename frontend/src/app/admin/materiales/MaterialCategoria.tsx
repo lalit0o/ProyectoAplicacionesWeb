@@ -15,87 +15,59 @@ export default function MaterialesPorCategoria({
     categoriasDisponibles,
     valoresSeleccionados = []
 }: Props) {
+   
     const [expandidas, setExpandidas] = useState<Record<number, boolean>>({})
 
-    const agruparPorCategoria = () => {
-        const agrupados: Record<number, Material[]> = {}
+  
+    const agrupados = materialesDisponibles.reduce((materialesAgrupados, materialActual) => {
+        const catId = materialActual.categoriaId || 0;
+        if (!materialesAgrupados[catId]) materialesAgrupados[catId] = [];
+        materialesAgrupados[catId].push(materialActual);
+        return materialesAgrupados;
+    }, {} as Record<number, Material[]>);
 
-        materialesDisponibles.forEach(mat => {
-            const categoriaId = mat.categoriaId || 0
-            if (!agrupados[categoriaId]) {
-                agrupados[categoriaId] = []
-            }
-            agrupados[categoriaId].push(mat)
-        })
+   
+    const categoriasARenderizar = [
+        { id: 0, nombre: "Sin categoría" },
+        ...categoriasDisponibles
+    ].filter(cat => agrupados[cat.id]?.length > 0); 
 
-        return agrupados
+    const toggleCategoria = (id: number) => {
+        setExpandidas(prev => ({ ...prev, [id]: !prev[id] }))
     }
-
-    const toggleCategoria = (categoriaId: number) => {
-        setExpandidas(prev => ({
-            ...prev,
-            [categoriaId]: !prev[categoriaId]
-        }))
-    }
-
-    const agrupados = agruparPorCategoria()
 
     return (
         <div className="flex flex-col gap-3 border border-zinc-200 rounded-xl p-4 bg-zinc-50/50">
-
-            {agrupados[0] && agrupados[0].length > 0 && (
-                <div className="border-b border-zinc-200 pb-3 last:border-0">
-                    <div className="font-semibold text-sm text-zinc-700 mb-2">Sin categoría</div>
-                    <div className="grid grid-cols-2 gap-2">
-                        {agrupados[0].map(mat => (
-                            <label key={mat.id} className="flex items-center gap-2 text-sm cursor-pointer hover:text-zinc-900 text-zinc-700 transition-colors">
-                                <input
-                                    type="checkbox"
-                                    name="materialesIds"
-                                    value={mat.id}
-                                    defaultChecked={valoresSeleccionados.includes(mat.id)}
-                                    className="accent-zinc-900 w-4 h-4 rounded cursor-pointer"
-                                />
-                                {mat.nombre}
-                            </label>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {categoriasDisponibles.map(categoria => {
-                const materialesDeLaCategoria = agrupados[categoria.id] || []
-                if (materialesDeLaCategoria.length === 0) return null
-
+          
+            {categoriasARenderizar.map(categoria => {
+                const materiales = agrupados[categoria.id]
                 const estaExpandida = expandidas[categoria.id] ?? false
 
                 return (
                     <div key={categoria.id} className="border-b border-zinc-200 pb-3 last:border-0">
+                       
                         <button
                             type="button"
                             onClick={() => toggleCategoria(categoria.id)}
                             className="w-full flex items-center justify-between text-sm font-semibold text-zinc-700 hover:text-zinc-900 transition-colors mb-2"
                         >
                             <span>{categoria.nombre}</span>
-                            <ChevronDown
-                                className={`h-4 w-4 transition-transform ${
-                                    estaExpandida ? 'rotate-180' : ''
-                                }`}
-                            />
+                            <ChevronDown className={`h-4 w-4 transition-transform ${estaExpandida ? 'rotate-180' : ''}`} />
                         </button>
 
+                        
                         {estaExpandida && (
                             <div className="grid grid-cols-2 gap-2">
-                                {materialesDeLaCategoria.map(mat => (
-                                    <label key={mat.id} className="flex items-center gap-2 text-sm cursor-pointer hover:text-zinc-900 text-zinc-700 transition-colors">
+                                {materiales.map(materialActual => (
+                                    <label key={materialActual.id} className="flex items-center gap-2 text-sm cursor-pointer hover:text-zinc-900 text-zinc-700 transition-colors">
                                         <input
                                             type="checkbox"
                                             name="materialesIds"
-                                            value={mat.id}
-                                            defaultChecked={valoresSeleccionados.includes(mat.id)}
+                                            value={materialActual.id}
+                                            defaultChecked={valoresSeleccionados.includes(materialActual.id)}
                                             className="accent-zinc-900 w-4 h-4 rounded cursor-pointer"
                                         />
-                                        {mat.nombre}
+                                        {materialActual.nombre}
                                     </label>
                                 ))}
                             </div>
@@ -103,7 +75,6 @@ export default function MaterialesPorCategoria({
                     </div>
                 )
             })}
-
         </div>
     )
 }

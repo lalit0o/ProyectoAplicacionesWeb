@@ -24,7 +24,7 @@ export default function ProductoForm({
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
     const [imagenUrl, setImagenUrl] = useState<string | null>(producto?.imagenUrl || null)
-    const esEdicion = !!producto
+    const esEdicion = !!producto !== undefined && producto !== null;
 
     const handleSubmit = async (formData: FormData) => {
         if (!imagenUrl) {

@@ -18,7 +18,7 @@ export default function Header() {
                 <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/categoria/todos">
                     TIENDA
                 </Link>
-                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
+                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/galeria">
                     GALERÍA
                 </Link>
                 <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
