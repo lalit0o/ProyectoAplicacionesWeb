@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Package, Truck, CheckCircle2, Clock } from "lucide-react";
 
@@ -93,9 +92,10 @@ export default async function MisPedidosPage() {
                                     <div className="flex flex-col gap-4">
                                         {pedido.detalles.map((detalle) => (
                                             <div key={detalle.id} className="flex items-center gap-4">
-                                                <div className="relative h-16 w-16 bg-zinc-100 rounded-md overflow-hidden flex-shrink-0">
-                                                    <Image src={detalle.producto.imagenUrl || '/vestido.png'} fill sizes="64px" alt={detalle.producto.titulo} className="object-cover" />
+                                                <div className="h-16 w-16 bg-zinc-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-zinc-200">
+                                                    <Package className="w-6 h-6 text-zinc-400" />
                                                 </div>
+                                                
                                                 <div className="flex-grow">
                                                     <h3 className="font-medium text-zinc-900">{detalle.producto.titulo}</h3>
                                                     <p className="text-sm text-zinc-500">Cantidad: {detalle.cantidadComprada}</p>

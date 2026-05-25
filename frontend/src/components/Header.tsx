@@ -26,6 +26,9 @@ export default function Header() {
                 <Link className="text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
                     CONTACTO
                 </Link>
+                <Link className="text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/mis-pedidos">
+                    MIS PEDIDOS
+                </Link>
             </nav>
 
 
