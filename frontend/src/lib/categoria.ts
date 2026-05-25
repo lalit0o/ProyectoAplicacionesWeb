@@ -1,7 +1,16 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"
 
-export async function obtenerCategorias()
-{
-    const categorias = await prisma.categoriaProducto.findMany();
-    return categorias;
+export async function obtenerCategorias() {
+    const categorias = await prisma.categoriaProducto.findMany({
+        where: {
+            productos: {
+                some: {
+                    enStock: true
+                }
+            }
+        },
+        orderBy: { nombre: "asc" }
+    })
+
+    return categorias
 }

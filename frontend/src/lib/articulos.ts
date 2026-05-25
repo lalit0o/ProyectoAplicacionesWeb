@@ -1,28 +1,47 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"
 
 interface ArticuloType {
-    id: number;
-    titulo: string;
-    precio: number;
-    imagenUrl?: string;
-    enStock: boolean;
-    categoria?: string;
-    categoriaId?: number;
+    id: number
+    titulo: string
+    precio: number
+    imagenUrl?: string
+    enStock: boolean
+    categoria?: string
+    categoriaId?: number
 }
 
+export async function obtenerArticulos(categoria: string): Promise<ArticuloType[]> {
+    try {
+        const productos = await prisma.producto.findMany({
+            where: {
+                enStock: true,
+                ...(categoria !== "todos" && {
+                    categoria: {
+                        nombre: categoria
+                    }
+                })
+            },
+            include: {
+                categoria: true
+            },
+            orderBy: { titulo: "asc" }
+        })
 
+        const articulos: ArticuloType[] = productos.map(p => ({
+            id: p.id,
+            titulo: p.titulo,
+            precio: p.precio,
+            imagenUrl: p.imagenUrl || undefined,
+            enStock: p.enStock,
+            categoria: p.categoria?.nombre,
+            categoriaId: p.categoriaId || undefined
+        }))
 
-export async function obtenerArticulos(categoria: string) {
-    if (categoria == "todos") {
-        const articulos : ArticuloType[] = await prisma.producto.findMany();
         console.log(articulos)
-        return articulos;
+        return articulos
 
-    }
-    else {
-        const articulos: ArticuloType[] = await prisma.$queryRaw`select * from productos a inner join categorias_productos b on a."categoriaId" = b.categoriaId where b.nombre = ${categoria}`;
-        console.log(articulos)
-        return articulos;
-
+    } catch (error) {
+        console.error("Error al obtener artículos:", error)
+        return []
     }
 }

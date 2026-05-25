@@ -38,7 +38,7 @@ export default async function ProductosAdminPage() {
         titulo: producto.titulo,
         precio: producto.precio,
         imagenUrl: producto.imagenUrl,
-        descripcion: null,
+        descripcion: producto.descripcion,
         enStock: producto.enStock,
         stockReal: calcularStockReal(producto),
         materialesIds: producto.recetas.map((r) => r.material.id),

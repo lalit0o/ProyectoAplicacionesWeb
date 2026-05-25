@@ -9,7 +9,7 @@ export default async function ListaCategorias() {
             <Link href={"/categoria/todos"}>Todos</Link>
             {categorias.map((categoria) => (
                 <Link
-                    key={categoria.categoriaId}
+                    key={categoria.id}
                     href={`/categoria/${categoria.nombre}`}
                     className="capitalize">
                     {categoria.nombre}

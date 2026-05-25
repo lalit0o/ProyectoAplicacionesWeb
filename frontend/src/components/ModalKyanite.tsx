@@ -88,14 +88,6 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                     </div>
                 </div>
 
-                <Button
-                    onClick={onClose}
-                    className="px-10 mt-4 ml-20 flex justify-center"
-                    aria-label="Cerrar modal"
-                    
-                >
-                    Aceptar
-                </Button>
 
 
 
