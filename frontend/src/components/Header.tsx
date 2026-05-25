@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store/useProductStore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,9 +24,6 @@ export default function Header() {
                 <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
                     CONTACTO
                 </Link>
-                <Link className="text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/mis-pedidos">
-                    MIS PEDIDOS
-                </Link>
             </nav>
 
             <div className="flex justify-center order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2">
@@ -38,10 +35,16 @@ export default function Header() {
             <div className="flex justify-end items-center gap-2 absolute md:static top-4 right-4 order-3 md:order-3">
                 <UserProfile />
 
-                <Link href="/carrito-de-compras">
-                    <Button variant="ghost" size="icon" className="relative text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-full">
+                <Link href="/mis-pedidos" title="Mis Pedidos">
+                    <Button variant="ghost" size="icon" className="text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-full">
                         <ShoppingBag className="h-5 w-5" />
-                        
+                    </Button>
+                </Link>
+
+                <Link href="/carrito-de-compras" title='Carrito'>
+                    <Button variant="ghost" size="icon" className="relative text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-full">
+                        <ShoppingCart className="h-5 w-5" />
+
                         {carrito?.length > 0 && (
                             <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-zinc-900 text-white text-[10px] rounded-full">
                                 {carrito.length}

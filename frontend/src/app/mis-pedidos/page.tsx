@@ -3,24 +3,26 @@ import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Package, Truck, CheckCircle2, Clock } from "lucide-react";
+import { Package, Truck, CheckCircle2, Clock, Check, Toolbox } from "lucide-react";
 
 const getEstadoUI = (estado: string) => {
     switch (estado) {
         case "PENDIENTE":
+            return { color: "bg-yellow-100 text-yellow-700", icon: Clock };
         case "ACEPTADO":
-            return { color: "bg-amber-100 text-amber-700", icon: Clock };
+            return { color: "bg-blue-100 text-blue-700", icon: Check };
         case "ELABORANDO":
-            return { color: "bg-blue-100 text-blue-700", icon: Package };
-        case "ENVIADO":
-            return { color: "bg-purple-100 text-purple-700", icon: Truck };
-        case "ENTREGADO":
+            return { color: "bg-purple-100 text-purple-700", icon: Toolbox };
+        case "TERMINADO":
             return { color: "bg-green-100 text-green-700", icon: CheckCircle2 };
+        case "ENVIADO":
+            return { color: "bg-indigo-100 text-indigo-700", icon: Truck };
+        case "ENTREGADO":
+            return { color: "bg-emerald-100 text-emerald-700", icon: Package };
         default:
             return { color: "bg-zinc-100 text-zinc-700", icon: Package };
     }
 };
-
 export default async function MisPedidosPage() {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value;
