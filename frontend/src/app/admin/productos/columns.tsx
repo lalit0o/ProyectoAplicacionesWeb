@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import type { Producto, Material, CategoriaProducto } from "@/types"
+import type { Producto, Material, CategoriaProducto, CategoriaMaterial } from "@/types"
 import ProductoAcciones from "./ProductoAcciones"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 interface TableMeta {
     materiales: Material[]
     categorias: CategoriaProducto[]
+    categoriasMaterial: CategoriaMaterial[]
 }
 
 export const columns: ColumnDef<Producto>[] = [
@@ -105,6 +106,7 @@ export const columns: ColumnDef<Producto>[] = [
             const meta = table.options.meta as TableMeta
             const materiales = meta?.materiales ?? []
             const categorias = meta?.categorias ?? []
+            const categoriasMaterial = meta?.categoriasMaterial ?? []
 
             return (
                 <div className="text-right px-4">
@@ -112,6 +114,7 @@ export const columns: ColumnDef<Producto>[] = [
                         producto={row.original}
                         materialesDisponibles={materiales}
                         categoriasDisponibles={categorias}
+                        categoriasMaterialDisponibles={categoriasMaterial}
                     />
                 </div>
             )

@@ -2,26 +2,27 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Package, Truck, CheckCircle2, Clock } from "lucide-react";
+import { Package, Truck, CheckCircle2, Clock, Check, Toolbox } from "lucide-react";
 
 const getEstadoUI = (estado: string) => {
     switch (estado) {
         case "PENDIENTE":
+            return { color: "bg-yellow-100 text-yellow-700", icon: Clock };
         case "ACEPTADO":
-            return { color: "bg-amber-100 text-amber-700", icon: Clock };
+            return { color: "bg-blue-100 text-blue-700", icon: Check };
         case "ELABORANDO":
-            return { color: "bg-blue-100 text-blue-700", icon: Package };
-        case "ENVIADO":
-            return { color: "bg-purple-100 text-purple-700", icon: Truck };
-        case "ENTREGADO":
+            return { color: "bg-purple-100 text-purple-700", icon: Toolbox };
+        case "TERMINADO":
             return { color: "bg-green-100 text-green-700", icon: CheckCircle2 };
+        case "ENVIADO":
+            return { color: "bg-indigo-100 text-indigo-700", icon: Truck };
+        case "ENTREGADO":
+            return { color: "bg-emerald-100 text-emerald-700", icon: Package };
         default:
             return { color: "bg-zinc-100 text-zinc-700", icon: Package };
     }
 };
-
 export default async function MisPedidosPage() {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value;
@@ -93,9 +94,10 @@ export default async function MisPedidosPage() {
                                     <div className="flex flex-col gap-4">
                                         {pedido.detalles.map((detalle) => (
                                             <div key={detalle.id} className="flex items-center gap-4">
-                                                <div className="relative h-16 w-16 bg-zinc-100 rounded-md overflow-hidden flex-shrink-0">
-                                                    <Image src={detalle.producto.imagenUrl || '/vestido.png'} fill sizes="64px" alt={detalle.producto.titulo} className="object-cover" />
+                                                <div className="h-16 w-16 bg-zinc-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-zinc-200">
+                                                    <Package className="w-6 h-6 text-zinc-400" />
                                                 </div>
+                                                
                                                 <div className="flex-grow">
                                                     <h3 className="font-medium text-zinc-900">{detalle.producto.titulo}</h3>
                                                     <p className="text-sm text-zinc-500">Cantidad: {detalle.cantidadComprada}</p>

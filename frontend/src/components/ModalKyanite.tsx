@@ -8,7 +8,7 @@ type Props = {
     open: boolean
     onClose: () => void
     children: React.ReactNode
-    variant?: "anuncio" | "formulario"
+    variant?: "anuncio" | "formulario" | "formulario-grande"
     titulo?: string
 }
 
@@ -29,9 +29,23 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
             window.removeEventListener("keydown", handleKeyDown)
         }
 
-    }, [open, onClose]) // solo re-corre cuando open o onClose cambian
+    }, [open, onClose])
 
     if (!open) return null
+
+
+    const getMaxWidth = () => {
+        switch (variant) {
+            case "anuncio":
+                return "max-w-sm"   
+            case "formulario":
+                return "max-w-md"      
+            case "formulario-grande":
+                return "max-w-4xl"     
+            default:
+                return "max-w-sm"
+        }
+    }
 
     return (
         <div
@@ -46,9 +60,7 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                 onClick={onClose}
             />
 
-
-            <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8 z-10 animate-in fade-in zoom-in-95 duration-200">
-
+            <div className={`relative w-full ${getMaxWidth()} max-h-[90vh] bg-white rounded-2xl shadow-2xl p-8 z-10 animate-in fade-in zoom-in-95 duration-200 overflow-y-auto`}>
 
                 <Button
                     variant="ghost"
@@ -60,19 +72,16 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                     <X className="h-5 w-5" />
                 </Button>
 
-
                 {titulo && (
-                    <h2 className={`mb-4 w-full ${variant === "anuncio"
-                        ? "font-serif text-2xl text-zinc-900 text-center"
-                        : "font-sans text-xl font-bold text-zinc-800 text-left"
-                        }`}>
-                        {titulo}
-                    </h2>
+                    <h2 className={`mb-4 w-full ${
+                        variant === "anuncio"
+                            ? "font-serif text-2xl text-zinc-900 text-center"
+                            : "font-sans text-xl font-bold text-zinc-800 text-left"
+                    }`}/>
+                    
                 )}
 
-
-                <div className={`mt-2 flex flex-col ${variant === "anuncio" ? "items-center" : "items-start"
-                    }`}>
+                <div className={`mt-2 flex flex-col ${variant === "anuncio" ? "items-center" : "items-start"}`}>
                     <div className="w-full text-left">
                         {children}
                     </div>

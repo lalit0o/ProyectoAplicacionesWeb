@@ -49,6 +49,7 @@ export default async function PedidosAdminPage() {
                 titulo: d.producto.titulo,
                 precio: d.producto.precio,
                 imagenUrl: d.producto.imagenUrl,
+                descripcion: null,
                 enStock: d.producto.enStock,
                 stockReal: d.producto.enStock,
                 materialesIds: [],

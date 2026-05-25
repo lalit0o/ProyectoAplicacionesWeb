@@ -11,6 +11,7 @@ export type Producto = {
     titulo: string
     precio: number
     imagenUrl: string | null
+    descripcion: string | null
     enStock: boolean // Esto es lo que el admin marca en la BD
     stockReal: boolean // Esta es la validacion de que existan todos los materiales para fabricar el producto
     materialesIds: number[]
