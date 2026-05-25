@@ -1,15 +1,25 @@
+import Link from 'next/link'
+
 export default function NotFound() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-            <h1 className="text-7xl font-bold text-black">404</h1>
-            <p className="text-2xl mt-4 text-black">La página que buscas no está disponible</p>
+        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-white px-6 text-center">
+            
+            <div className="relative z-10 flex flex-col items-center">
+                <h2 className="font-serif text-3xl md:text-4xl text-zinc-900 mb-4 tracking-tight italic">
+                    Parece que te perdiste...
+                </h2>
+                
+                <p className="font-sans text-zinc-500 max-w-md mb-10 text-lg font-light">
+                    La página que buscas no existe, fue movida o actualmente no está disponible en nuestra colección.
+                </p>
 
-            <a
-                href="/"
-                className="mt-6 px-6 py-3 bg-pink-500 rounded-xl hover:bg-pink-600 transition text-white"
-            >
-                Volver al inicio
-            </a>
+                <Link
+                    href="/"
+                    className="px-8 py-4 bg-zinc-900 text-white font-medium rounded-full hover:bg-zinc-700 transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl active:scale-95"
+                >
+                    Volver a la colección
+                </Link>
+            </div>
         </div>
     );
 }
