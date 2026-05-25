@@ -55,7 +55,7 @@ export default function ProductUI({ producto }: { producto: ProductoType }) {
 
                 <div className="relative aspect-square w-full bg-zinc-50 rounded-sm overflow-hidden">
                     <Image
-                        src={ '/vestido.png'}
+                        src={producto.imagenUrl}
                         fill
                         sizes="(max-width: 9504px) 100vw, 50vw"
                         className="object-cover"

@@ -12,11 +12,28 @@ export default function Login() {
     const setModalOpen = useCartStore((state) => state.setModalOpen);
 
     const router = useRouter();
-
+    
+    const [isLog,setIsLog] = useState<boolean>(false);
     const [auth, setAuth] = useState<boolean | null>(null);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [modalTitulo,setModalTitulo] = useState<string>('');
+    const [modalMensaje,setModalMensaje] = useState<string>('');
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const cambiarModal =(titulo,mensaje)=>{
+        setModalTitulo(titulo);
+        setModalMensaje(mensaje);
+        setModalOpen(true);
+
+    }
+
+    const handleLogin=()=>{
+        setModalOpen(false);
+        if(isLog===true){
+            window.location.assign('/');
+        }
+    }
+
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -30,7 +47,7 @@ export default function Login() {
 
         event.preventDefault();
         if (!email || !password) {
-            console.log("Debes ingresar todos los parámetros");
+            cambiarModal('Campos incompletos','No has ingresado todos los campos en el formulario.');
             return;
         }
 
@@ -42,15 +59,17 @@ export default function Login() {
                 },
                 body: JSON.stringify({ email, password }),
             });
+
+            if(res.status===400){
+                cambiarModal('Error','El e-mail o la contraseña ingresados no existen');
+                return;
+            }
             const data = await res.json();
 
             if (res.status === 200) {
                 if (!(data.rol == "ADMIN")) {
-                    setModalOpen(true);
-                    setTimeout(() => {
-                        window.location.reload();
-                        window.location.assign("/");
-                    }, 1000)
+                    cambiarModal('Inicio de sesión exitoso','¡Ya puedes navegar por nuestra tienda!');
+                    setIsLog(true);
 
                 }
                 else {
@@ -106,16 +125,14 @@ export default function Login() {
                                 className='border rounded-lg p-2'
                                 type="email"
                                 value={email}
-                                onChange={handleEmailChange}
-                                required />
+                                onChange={handleEmailChange}/>
 
                             <label>Contraseña: </label>
                             <input
                                 className='border rounded-lg p-2'
                                 type="password"
                                 value={password}
-                                onChange={handlePasswordChange}
-                                required />
+                                onChange={handlePasswordChange} />
                         </div>
                         <div className=' flex flex-col justify-center '>
                             <div className='flex justify-center mb-4'>
@@ -133,12 +150,12 @@ export default function Login() {
 
                     <MensajeModal
                         open={modalOpen}
-                        onClose={() => setModalOpen(false)}
+                        onClose={handleLogin}
                         variant="anuncio"
-                        titulo="Inicio de sesión exitoso"
+                        titulo={modalTitulo}
                     >
                         <p className="text-zinc-600">
-                            ¡Ya puedes navegar y agregar artículos a tu carrito!
+                            {modalMensaje}
                         </p>
 
                     </MensajeModal>
