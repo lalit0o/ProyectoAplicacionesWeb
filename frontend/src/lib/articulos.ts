@@ -37,7 +37,6 @@ export async function obtenerArticulos(categoria: string): Promise<ArticuloType[
             categoriaId: p.categoriaId || undefined
         }))
 
-        console.log(articulos)
         return articulos
 
     } catch (error) {
