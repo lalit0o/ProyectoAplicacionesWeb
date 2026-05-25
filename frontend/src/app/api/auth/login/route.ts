@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         const { email, password } = body;
 
         if (!email || !password) {
-            return NextResponse.json({ message: "Faltan credenciales" }, { status: 400 });
+            return NextResponse.json({ message: "Faltan credenciales." }, { status: 400 });
         }
 
         const usuario = await prisma.usuario.findUnique({
@@ -19,12 +19,12 @@ export async function POST(request: Request) {
         });
 
         if (!usuario) {
-            return NextResponse.json({ message: "No hay un usuario con ese email" }, { status: 400 });
+            return NextResponse.json({ message: "El e-mail ingresado no existe." }, { status: 400 });
         }
 
         const coincide = await bcrypt.compare(password,usuario.password)
         if(!coincide){
-            return NextResponse.json({message:"Las contraseñas no coinciden"},{status:400});
+            return NextResponse.json({message:"Las contraseñas no coinciden."},{status:400});
         }
         
 

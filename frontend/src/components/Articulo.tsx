@@ -19,6 +19,8 @@ type Props = {
 }
 
 export default function Articulo({ articulo }: Props) {
+
+    console.log(articulo);
     return (
         <Card className="group overflow-hidden transition-all hover:shadow-lg border-zinc-100">
 
@@ -30,7 +32,7 @@ export default function Articulo({ articulo }: Props) {
 
 
                     <Image
-                        src={'/vestido.png'}
+                        src={articulo.imagenUrl}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                         alt={`Fotografía de ${articulo.titulo}`}

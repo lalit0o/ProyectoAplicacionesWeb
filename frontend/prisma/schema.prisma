@@ -91,13 +91,13 @@ model Producto {
   recetas  Receta[]
 
   categoriaId Int?
-  categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [id])
+  categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [categoriaId])
 
   @@map("productos")
 }
 
 model CategoriaProducto {
-  id        Int        @id @default(autoincrement())
+  categoriaId        Int        @id @default(autoincrement())
   nombre    String     @unique
   productos Producto[]
 
