@@ -2,38 +2,48 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache'
+import { put, del } from '@vercel/blob'
 
 export async function eliminarProducto(id: number) {
     try {
-       const pedidosActivos = await prisma.detallePedido.count({
-        where: {productoId: id}
-    })
-    
-    if(pedidosActivos > 0){
-        return{
-            success: false,
-            error: "Este producto tiene pedidos registrados y no puede eliminarse"
+        
+        const pedidosEnCurso = await prisma.detallePedido.count({
+            where: {
+                productoId: id,
+                pedido: {
+                    estadoPedido: {
+                        not: "ENTREGADO"
+                    }
+                }
+            }
+        })
+
+        if (pedidosEnCurso > 0) {
+            return {
+                success: false,
+                error: `Este producto tiene ${pedidosEnCurso} pedido(s) en curso. No puede eliminarse hasta que se entreguen.`
+            }
         }
-    }
 
-    await prisma.producto.delete({
-        where: { id }
-    })
+      
+        await prisma.producto.delete({
+            where: { id }
+        })
 
+        revalidatePath('/admin/productos')
+        return { success: true }
 
-    revalidatePath('/admin/productos')
-    return { success: true }
     } catch (error) {
-        console.error("Error al intentar eliminar el producto:", error)
-        return { success: false, error: "Error al intentar eliminar el producto" }
-    }  
-}   
-
+        console.error("Error al eliminar producto:", error)
+        return { success: false, error: "Error al eliminar el producto." }
+    }
+}
 
 export async function crearProducto(formData: FormData, materialesIds: number[]) {
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
+    const descripcion = formData.get("descripcion") as string || null
     const categoriaId = formData.get("categoriaId") as string
 
     if (!titulo || titulo.trim() === "") {
@@ -50,6 +60,7 @@ export async function crearProducto(formData: FormData, materialesIds: number[])
                 titulo: titulo.trim(),
                 precio,
                 imagenUrl,
+                descripcion: descripcion?.trim() || null,
                 enStock: true,
                 categoriaId: categoriaId ? Number(categoriaId) : null,
                 recetas: {
@@ -76,6 +87,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
+    const descripcion = formData.get("descripcion") as string || null
     const categoriaId = formData.get("categoriaId") as string
 
   
@@ -103,6 +115,7 @@ export async function editarProducto(id: number, formData: FormData, materialesI
                     titulo: titulo.trim(),
                     precio,
                     imagenUrl,
+                    descripcion: descripcion?.trim() || null,
                     categoriaId: categoriaId ? Number(categoriaId) : null,
                     recetas: {
                         create: materialesIds.map(idMaterial => ({
@@ -197,3 +210,46 @@ export async function editarProducto(id: number, formData: FormData, materialesI
             return { success: false, error: "Ocurrió un error al eliminar la categoría." }
         }
     }
+
+export async function subirImagenProducto(formData: FormData) {
+    try {
+        const file = formData.get('imagen') as File
+
+        if (!file) {
+            return { success: false, error: "No se seleccionó ninguna imagen." }
+        }
+
+        if (!file.type.startsWith('image/')) {
+            return { success: false, error: "El archivo debe ser una imagen." }
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            return { success: false, error: "La imagen no debe superar 5MB." }
+        }
+
+        const bytes = await file.arrayBuffer()
+        
+        const blob = await put(`productos/${Date.now()}-${file.name}`, bytes, {
+            access: 'public',
+            contentType: file.type
+        })
+
+        revalidatePath('/admin/productos')
+        
+        return { success: true, url: blob.url }
+
+    } catch (error) {
+        console.error("Error al subir imagen:", error)
+        return { success: false, error: "Error al subir la imagen." }
+    }
+}
+
+export async function eliminarImagenProducto(url: string) {
+    try {
+       
+        return { success: true }
+    } catch (error) {
+        console.error("Error al eliminar imagen:", error)
+        return { success: false }
+    }
+}

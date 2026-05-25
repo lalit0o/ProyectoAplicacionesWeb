@@ -5,7 +5,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-zinc-50 flex font-sans">
       
-      {/* BARRA LATERAL (SIDEBAR) */}
       <aside className="w-64 bg-white border-r border-zinc-200 flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-zinc-200">
           <span className="font-serif text-xl font-bold uppercase tracking-widest text-zinc-900">
@@ -35,7 +34,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
      
       <main className="flex-1 overflow-y-auto">
-        {/* Aquí se renderizarán las subpáginas del admin */}
         {children}
       </main>
       

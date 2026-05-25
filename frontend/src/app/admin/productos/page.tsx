@@ -8,18 +8,19 @@ import { columns } from "@/app/admin/productos/columns"
 
 export default async function ProductosAdminPage() {
 
-   
     const materialesDB = await prisma.material.findMany({
         orderBy: { nombre: "asc" },
         include: { categoria: true }
     })
 
-   
     const categoriasDB = await prisma.categoriaProducto.findMany({
         orderBy: { nombre: "asc" }
     })
 
-   
+    const categoriasMaterialDB = await prisma.categoriaMaterial.findMany({
+        orderBy: { nombre: "asc" }
+    })
+
     const productosDB = await prisma.producto.findMany({
         orderBy: { titulo: "asc" },
         include: {
@@ -32,12 +33,12 @@ export default async function ProductosAdminPage() {
         }
     })
 
-  
     const productos: Producto[] = productosDB.map((producto) => ({
         id: producto.id,
         titulo: producto.titulo,
         precio: producto.precio,
         imagenUrl: producto.imagenUrl,
+        descripcion: null,
         enStock: producto.enStock,
         stockReal: calcularStockReal(producto),
         materialesIds: producto.recetas.map((r) => r.material.id),
@@ -46,9 +47,8 @@ export default async function ProductosAdminPage() {
     }))
 
     return (
-        <div className="p-8 space-y-8 max-w-5xl mx-auto">
+        <div className="p-8 space-y-8 max-w-7xl mx-auto">
 
-          
             <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-100 pb-6">
                 <div className="space-y-1">
                     <h1 className="text-3xl font-serif text-zinc-900 tracking-tight">
@@ -60,20 +60,26 @@ export default async function ProductosAdminPage() {
                     </p>
                 </div>
 
-                <ProductoAgregar materiales={materialesDB} categorias={categoriasDB} />
+                <ProductoAgregar 
+                    materiales={materialesDB} 
+                    categorias={categoriasDB}
+                    categoriasMaterial={categoriasMaterialDB}
+                />
             </section>
 
-           
             <section className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <CategoriasProducto categorias={categoriasDB} />
             </section>
 
-           
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <DataTable
                     columns={columns}
                     data={productos}
-                    meta={{ materiales: materialesDB, categorias: categoriasDB }}
+                    meta={{ 
+                        materiales: materialesDB, 
+                        categorias: categoriasDB,
+                        categoriasMaterial: categoriasMaterialDB
+                    }}
                     searchKey="titulo"
                 />
             </div>

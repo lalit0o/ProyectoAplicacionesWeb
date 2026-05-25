@@ -1,23 +1,89 @@
-import KanbanBoard from "./KanbanBoard";
+import { prisma } from "@/lib/prisma"
+import type { Pedido } from "@/types"
+import { DataTable } from "@/components/DataTable"
+import { columns } from "./columns"
 
-const mockPedidos: any[] = [
-    { id: 101, cliente: "Ana Martínez", total: 1250, metodoEntrega: "PAQUETERIA", estado: "PENDIENTE", productos: ["Collar Amatista", "Aretes Gota"] },
-    { id: 102, cliente: "Carlos Ruiz", total: 450, metodoEntrega: "RECOLECCION", estado: "PENDIENTE", productos: ["Pulsera Cuarzo"] },
-    { id: 103, cliente: "Sofia Castro", total: 890, metodoEntrega: "PAQUETERIA", estado: "ACEPTADO", productos: ["Anillo Luna"] },
-    { id: 104, cliente: "Laura Gómez", total: 2100, metodoEntrega: "RECOLECCION", estado: "ELABORANDO", productos: ["Set Especial Kyanite"] },
-];
+export default async function PedidosAdminPage() {
+    const pedidosDB = await prisma.pedido.findMany({
+        orderBy: { fechaCreacion: "desc" },
+        include: {
+            usuario: true,
+            direccion: true,
+            detalles: {
+                include: {
+                    producto: true
+                }
+            }
+        }
+    })
 
-export default function PedidosPage() {
+    const pedidos: Pedido[] = pedidosDB.map((p) => ({
+        id: p.id,
+        usuarioId: p.usuarioId,
+        usuario: {
+            id: p.usuario.id,
+            nombre: p.usuario.nombre,
+            email: p.usuario.email,
+            telefono: p.usuario.telefono
+        },
+        direccionId: p.direccionId,
+        direccion: p.direccion ? {
+            id: p.direccion.id,
+            usuarioId: p.direccion.usuarioId,
+            calle: p.direccion.calle,
+            ciudad: p.direccion.ciudad,
+            codigoPostal: p.direccion.codigoPostal,
+            referencia: p.direccion.referencia
+        } : null,
+        total: p.total,
+        metodoEntrega: p.metodoEntrega as any,
+        estadoPedido: p.estadoPedido as any,
+        fechaCreacion: p.fechaCreacion,
+        finalizado: p.estadoPedido === "ENTREGADO",
+        detalles: p.detalles.map((d) => ({
+            id: d.id,
+            pedidoId: d.pedidoId,
+            productoId: d.productoId,
+            producto: {
+                id: d.producto.id,
+                titulo: d.producto.titulo,
+                precio: d.producto.precio,
+                imagenUrl: d.producto.imagenUrl,
+                descripcion: null,
+                enStock: d.producto.enStock,
+                stockReal: d.producto.enStock,
+                materialesIds: [],
+                categoriaId: null,
+                categoria: null
+            },
+            cantidadComprada: d.cantidadComprada,
+            precioUnitario: d.precioUnitario
+        }))
+    }))
+
     return (
-        <div className="p-8 h-[calc(100vh-80px)] flex flex-col space-y-6">
-            <header>
-                <h1 className="text-3xl font-serif text-zinc-900 tracking-tight">Flujo de Producción</h1>
-                <p className="text-zinc-500 text-sm mt-1">Gestiona el taller moviendo las tarjetas conforme trabajas.</p>
-            </header>
+        <div className="p-8 space-y-8 max-w-7xl mx-auto">
 
-            <div className="flex-1 overflow-hidden">
-                <KanbanBoard pedidosIniciales={mockPedidos} />
+            <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-100 pb-6">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-serif text-zinc-900 tracking-tight">
+                        Panel de pedidos
+                    </h1>
+                    <p className="text-zinc-500 text-sm">
+                        Gestiona y da seguimiento a los pedidos de{" "}
+                        <span className="italic font-medium">Kyanite Artesanal</span>.
+                    </p>
+                </div>
+            </section>
+
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <DataTable
+                    columns={columns}
+                    data={pedidos}
+                    searchKey="id"
+                />
             </div>
+
         </div>
-    );
+    )
 }
