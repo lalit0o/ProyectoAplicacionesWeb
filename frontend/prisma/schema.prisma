@@ -93,7 +93,6 @@ model Producto {
   categoriaId Int?
   categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [id])
 
-
   @@map("productos")
 }
 

@@ -17,6 +17,7 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
 
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [mostrarModalExito, setMostrarModalExito] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,8 +48,7 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
                 setErrorMsg(data.error || "Ocurrió un problema al guardar tu pedido.");
             }
             else {
-                alert("Pedido realizado con éxito");
-                onSuccess();
+                setMostrarModalExito(true);
             }
         } catch (error) {
             console.log(error);
@@ -57,6 +57,11 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
             setIsLoading(false);
         }
     };
+
+    function handleModalExito() {
+        setMostrarModalExito(false);
+        onSuccess();
+    }
 
     return (
         <div className="p-8">
@@ -95,6 +100,25 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
                     {isLoading ? "Guardando..." : "Guardar y Continuar"}
                 </button>
             </form>
+
+            {mostrarModalExito && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                    <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center transform scale-100 transition-all dynamic-island">
+
+                        <h3 className="text-2xl font-bold text-zinc-900 mb-3">
+                            Pedido Guardado
+                        </h3>
+
+                        <p className="text-base text-zinc-600 mb-8">
+                            Tu dirección y pedido se han registrado exitosamente.
+                        </p>
+
+                        <button onClick={handleModalExito} className="w-full py-3 bg-zinc-900 text-white rounded-xl font-semibold hover:bg-zinc-800 transition-all active:scale-[0.98] shadow-md">
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
