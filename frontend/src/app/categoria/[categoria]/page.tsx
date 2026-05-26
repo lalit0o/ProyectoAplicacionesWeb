@@ -1,7 +1,6 @@
 import CategoriaUI from "@/components/CategoriaUI";
 import { obtenerArticulos } from "@/lib/articulos";
 
-
 interface ArticuloType {
     id: number;
     titulo: string;
@@ -13,28 +12,20 @@ interface ArticuloType {
 }
 
 type Props = {
-    params: Promise<{ categoria :{categoria:string}}>;
+    params: Promise<{ categoria: string }>;
 };
 
-
-
-
-
-
-
 export default async function CategoriaPage({ params }: Props) {
+    
+    const { categoria } = await params;
 
-    const { categoria }:typeof categoria = await params;
-
-
-
-    const articulos= await obtenerArticulos(categoria);
-
+    const articulos = await obtenerArticulos(categoria);
 
     return (
         <CategoriaUI
             articulos={articulos}
             tituloCategoria={categoria === "todos" ? "Colección Completa" : categoria}
+            categoriaActiva={categoria} 
         />
     );
 }

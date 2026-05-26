@@ -45,16 +45,16 @@ export default function Header() {
                 <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/categoria/todos">
                     TIENDA
                 </Link>
-                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/galeria">
+                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/#galeria">
                     GALERÍA
                 </Link>
-                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
+                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/#contacto">
                     CONTACTO
                 </Link>
             </nav>
 
             <div className="flex justify-center order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2">
-                <Link className="text-3xl font-serif font-bold tracking-widest uppercase hover:opacity-80 transition-opacity text-zinc-900" href='/'>
+                <Link className="text-3xl font-serif font-bold tracking-widest uppercase hover:opacity-80 transition-opacity text-zinc-900" href='/#hero'>
                     Kyanite
                 </Link>
             </div>

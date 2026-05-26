@@ -2,33 +2,33 @@ import Articulo from "@/components/Articulo";
 import ListaCategorias from "./ui/Categorias";
 
 type ArticuloType = {
-    id:number;
-    titulo:string;
-    precio:number;
-    imagenUrl?:string;
-    enStock:boolean;
-    categoria?:string;
-    categoriaId?:number;
+    id: number;
+    titulo: string;
+    precio: number;
+    imagenUrl?: string;
+    enStock: boolean;
+    categoria?: string;
+    categoriaId?: number;
 }
 
 type Props = {
     articulos?: ArticuloType[];
-    tituloCategoria?: string |any;
+    tituloCategoria?: string | any;
+    categoriaActiva: string;
 }
 
-export default function CategoriaUI({ articulos, tituloCategoria = "Nuestra Colección" }: Props) {
-
+export default function CategoriaUI({ articulos = [], tituloCategoria = "Nuestra Colección", categoriaActiva }: Props) {
 
     return (
 
         <main className="container mx-auto px-4 py-12 md:py-16">
 
-
             <div className="flex flex-col items-center text-center mb-16">
                 <h1 className="text-4xl font-serif text-zinc-900 mb-6 capitalize">
                     {tituloCategoria}
                 </h1>
-                <ListaCategorias/>
+                
+                <ListaCategorias categoriaActiva={categoriaActiva} />
 
                 <div className="h-px w-24 bg-zinc-200" />
             </div>
