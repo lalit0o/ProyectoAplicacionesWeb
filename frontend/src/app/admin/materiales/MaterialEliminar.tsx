@@ -33,7 +33,7 @@ export default function MaterialEliminar({ material, onClose }: Props) {
                 <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl flex gap-3 items-start animate-in fade-in">
                     <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
                     <div className="space-y-1">
-                        <p className="text-sm font-bold text-amber-900">Material protegido</p>
+                        <p className="text-sm font-bold text-amber-900">Material en uso</p>
                         <p className="text-xs text-amber-700 leading-relaxed">{errorMsg}</p>
                     </div>
                 </div>

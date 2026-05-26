@@ -12,7 +12,7 @@ interface Props {
 export default function CategoriaForm({ onSuccess, categoria }: Props) {
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
-    const esEdicion = !!categoria
+    const esEdicion = categoria !== undefined && categoria !== null;
 
     const handleSubmit = async (formData: FormData) => {
         startTransition(async () => {

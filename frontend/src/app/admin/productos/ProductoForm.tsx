@@ -24,7 +24,7 @@ export default function ProductoForm({
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
     const [imagenUrl, setImagenUrl] = useState<string | null>(producto?.imagenUrl || null)
-    const esEdicion = !!producto
+    const esEdicion = !!producto !== undefined && producto !== null;
 
     const handleSubmit = async (formData: FormData) => {
         if (!imagenUrl) {
@@ -61,6 +61,7 @@ export default function ProductoForm({
             
             <div className="flex gap-6">
 
+                
                 <div className="flex-shrink-0 w-56">
                     <label className="text-sm font-semibold text-zinc-700 block mb-2">
                         Imagen del Producto

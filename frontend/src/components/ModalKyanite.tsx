@@ -77,8 +77,9 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                         variant === "anuncio"
                             ? "font-serif text-2xl text-zinc-900 text-center"
                             : "font-sans text-xl font-bold text-zinc-800 text-left"
-                    }`}/>
-                    
+                    }`}>
+                        {titulo}
+                    </h2>
                 )}
 
                 <div className={`mt-2 flex flex-col ${variant === "anuncio" ? "items-center" : "items-start"}`}>
@@ -87,14 +88,6 @@ export default function ModalKyanite({ open, onClose, children, variant = "anunc
                     </div>
                 </div>
 
-                <Button
-                    onClick={onClose}
-                    className="px-10 mt-4 ml-20 flex justify-center"
-                    aria-label="Cerrar modal"
-                    
-                >
-                    Aceptar
-                </Button>
 
 
 

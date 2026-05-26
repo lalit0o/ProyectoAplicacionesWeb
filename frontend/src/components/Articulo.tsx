@@ -19,8 +19,6 @@ type Props = {
 }
 
 export default function Articulo({ articulo }: Props) {
-
-    console.log(articulo);
     return (
         <Card className="group overflow-hidden transition-all hover:shadow-lg border-zinc-100">
 

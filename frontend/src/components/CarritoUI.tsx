@@ -54,10 +54,10 @@ export default function CarritoUI() {
 
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-20">
 
-            <div className="lg:col-span-2 flex flex-col gap-6">
-                <h2 className="text-2xl font-serif text-zinc-900 border-b pb-4">Revisar Carrito</h2>
+            <div className="lg:col-span-2 flex flex-col gap-10">
+                <h2 className="text-2xl font-serif text-zinc-900 border-b pb-5">Revisar Carrito</h2>
 
                 {carrito.map((art) => (
                     <div key={art.id} className="flex flex-row items-center gap-6 py-4 border-b border-zinc-100 group">

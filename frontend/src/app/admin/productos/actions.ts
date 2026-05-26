@@ -17,7 +17,7 @@ export async function eliminarProducto(id: number) {
                 }
             }
         })
-
+   console.log(`Producto ${id}: ${pedidosEnCurso} pedidos en curso`) 
         if (pedidosEnCurso > 0) {
             return {
                 success: false,

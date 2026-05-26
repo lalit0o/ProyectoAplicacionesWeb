@@ -6,10 +6,37 @@ import { useCartStore } from '@/store/useProductStore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import UserProfile from '@/components/UserProfile';
+import { useEffect, useState } from 'react';
+
+type Cookie = {
+    nombre: string;
+    email: string;
+    rol: string;
+}
 
 export default function Header() {
 
     const carrito = useCartStore((state) => state.carrito);
+    const [cookie, setCookie] = useState<Cookie | null>(null);
+
+    useEffect(() => {
+        async function obtenerCookie() {
+            try {
+                const res = await fetch("/api/cookie", {
+                    method: "GET"
+                });
+
+                const data: Cookie = await res.json();
+                setCookie(data);
+
+            }catch(error){
+                setCookie(null);
+            }
+
+        }
+
+        obtenerCookie();
+    }, [])
 
     return (
         <header className="flex flex-col md:flex-row items-center justify-between bg-white border-b border-zinc-100 py-4 px-6 md:px-8 mb-8 sticky top-0 z-50 gap-4 md:gap-0">
@@ -18,16 +45,16 @@ export default function Header() {
                 <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/categoria/todos">
                     TIENDA
                 </Link>
-                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
+                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/#galeria">
                     GALERÍA
                 </Link>
-                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/">
+                <Link className="text-xs md:text-sm font-medium tracking-widest text-zinc-600 hover:text-zinc-900 transition-colors" href="/#contacto">
                     CONTACTO
                 </Link>
             </nav>
 
             <div className="flex justify-center order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2">
-                <Link className="text-3xl font-serif font-bold tracking-widest uppercase hover:opacity-80 transition-opacity text-zinc-900" href='/'>
+                <Link className="text-3xl font-serif font-bold tracking-widest uppercase hover:opacity-80 transition-opacity text-zinc-900" href='/#hero'>
                     Kyanite
                 </Link>
             </div>
@@ -40,6 +67,10 @@ export default function Header() {
                         <ShoppingBag className="h-5 w-5" />
                     </Button>
                 </Link>
+
+                {cookie?.rol === "ADMIN" && (
+                    <Link href="/admin">Admin</Link>
+                )}
 
                 <Link href="/carrito-de-compras" title='Carrito'>
                     <Button variant="ghost" size="icon" className="relative text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-full">

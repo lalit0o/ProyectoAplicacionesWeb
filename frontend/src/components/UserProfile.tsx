@@ -34,7 +34,7 @@ export default function UserProfile() {
             window.location.reload();
             window.location.assign("/login");
 
-        },1000)
+        }, 1000)
 
 
 
@@ -65,9 +65,14 @@ export default function UserProfile() {
                 <div className="absolute right-0 top-10 bg-white shadow-lg p-4 rounded w-48">
                     {data ? (
                         <>
-                            <p >Bienvenido, <span className="font-semibold">{data.name}</span></p>
-                            <br />
-                            <button type="button" className="bg-red-500 text-white p-4 rounded-2xl" onClick={handleLogOut} >Cerrar sesión</button>
+                            <div className="flex justify-center flex-col text-center">
+                                <p >Bienvenido, <span className="font-bold">{data.name}</span></p>
+                                <br />
+                                <p>Rol: <span className="font-bold">{data.rol}</span></p>
+                                <div className="flex justify-center mt-4">
+                                    <button type="button" className="bg-black text-white px-4 py-2 rounded-2xl" onClick={handleLogOut} >Cerrar sesión</button>
+                                </div>
+                            </div>
 
                             <MensajeModal
                                 open={modalOpen}
@@ -80,7 +85,6 @@ export default function UserProfile() {
                                 </p>
 
                             </MensajeModal>
-
 
                         </>
 

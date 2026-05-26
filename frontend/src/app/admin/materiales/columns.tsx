@@ -22,29 +22,30 @@ export const columns: ColumnDef<Material>[] = [
         )
     },
     {
-        accessorKey: "categoria.nombre", 
+        accessorFn: (row) => row.categoria?.nombre ?? "Sin categoría",
         id: "categoria",
         header: ({ column }) => {
             return (
-            <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                
-            >
-            <span className="text-sm font-bold text-zinc-950">Categoría</span>
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    <span className="text-sm font-bold text-zinc-950">Categoría</span>
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
             )
         },
         cell: ({ row }) => {
-            const nombre = row.original.categoria?.nombre
+            // Acceder directamente a row.original.categoria
+            const categoriaNombre = row.original.categoria?.nombre ?? "Sin categoría"
+            
             return (
-            <span className="px-4 text-sm text-zinc-700">
-                {nombre ?? "Sin categoría"}
-            </span>
+                <span className="px-4 text-sm text-zinc-700">
+                    {categoriaNombre}
+                </span>
             )
         },
-        },
+    },
     {
         accessorKey: "enStock",
         header: "En Stock",

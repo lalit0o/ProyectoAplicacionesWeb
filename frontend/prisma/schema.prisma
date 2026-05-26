@@ -151,8 +151,9 @@ model PagoSimulado {
 
 model Receta {
   id         Int      @id @default(autoincrement())
+
   productoId Int
-  producto   Producto @relation(fields: [productoId], references: [id])
+  producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
   materialId Int
   material   Material @relation(fields: [materialId], references: [id])
 

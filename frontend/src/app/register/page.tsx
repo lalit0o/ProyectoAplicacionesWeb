@@ -12,12 +12,13 @@ export default function Register() {
     const modalOpen = useCartStore((state) => state.modalOpen);
     const setModalOpen = useCartStore((state) => state.setModalOpen);
 
-    const [isRegister,setIsRegister] = useState<boolean>(false);
+    const [isRegister, setIsRegister] = useState<boolean>(false);
 
     const [modalTitulo, setModalTitulo] = useState<string>('');
     const [modalMensaje, setModalMensaje] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [repeatPassword, setRepeatPassword] = useState<string>('');
     const [nombre, setNombre] = useState<string>('');
     const [telefono, setTelefono] = useState<string>('');
 
@@ -28,10 +29,10 @@ export default function Register() {
 
     }
 
-    const handleLogin= ()=>{
+    const handleLogin = () => {
         setModalOpen(false);
 
-        if(isRegister===true){
+        if (isRegister === true) {
             window.location.assign('/login');
         }
 
@@ -51,6 +52,10 @@ export default function Register() {
         setTelefono(event.target.value);
     }
 
+    const handleRepeatPasswordChange = (event) => {
+        setRepeatPassword(event.target.value);
+    }
+
     const handleSubmit = async (event) => {
 
         event.preventDefault();
@@ -58,6 +63,11 @@ export default function Register() {
             cambiarModal('Campos incompletos', 'No has ingresado todos los campos en el formulario.');
 
             console.log("Debes ingresar todos los parámetros");
+        }
+
+        if(password !==repeatPassword){
+            cambiarModal('Error','Las contraseñas ingresadas deben coincidir');
+            return;
         }
         try {
             const res = await fetch('/api/auth/register', {
@@ -67,21 +77,22 @@ export default function Register() {
                 },
                 body: JSON.stringify({ email, password, nombre, telefono })
             });
-            if (res.status ===400){
-                cambiarModal('Error','El correo ingresado ya se encuentra vinculado a otra cuenta.')
+            if (res.status === 400) {
+                cambiarModal('Error', 'El correo ingresado ya se encuentra vinculado a otra cuenta.')
                 return;
             }
-            if(res.status ===500){
-                cambiarModal('Lo sentimos','Hubo un problema en el servidor. Inténtelo más tarde.')
+            if (res.status === 500) {
+                cambiarModal('Lo sentimos', 'Hubo un problema en el servidor. Inténtelo más tarde.')
             }
-            if(res.status===201){
-                cambiarModal('¡Éxito!','Ya puedes iniciar sesión y navegar por la tienda.')
+            if (res.status === 201) {
+                cambiarModal('¡Éxito!', 'Ya puedes iniciar sesión y navegar por la tienda.')
                 setIsRegister(true);
             }
 
 
 
         } catch (error) {
+            cambiarModal('Error', 'Hubo un error en el servidor. Por favor, inténtelo más tarde.');
         }
     }
 
@@ -100,7 +111,7 @@ export default function Register() {
                             type="text"
                             value={nombre}
                             onChange={handleNombreChange}
-                            placeholder='Ej. Brandon Solis'/>
+                            placeholder='Ej. Brandon Solis' />
                         <label>Email:</label>
                         <input
                             className='border rounded-lg p-2'
@@ -114,7 +125,13 @@ export default function Register() {
                             className='border rounded-lg p-2'
                             type="password"
                             value={password}
-                            onChange={handlePasswordChange}/>
+                            onChange={handlePasswordChange} />
+                        <label>Repetir contraseña: </label>
+                        <input
+                            className='border rounded-lg p-2'
+                            type="password"
+                            value={repeatPassword}
+                            onChange={handleRepeatPasswordChange} />
                         <label>Teléfono (opcional):</label>
                         <input
                             className='border rounded-lg p-2'
@@ -122,7 +139,7 @@ export default function Register() {
                             value={telefono}
                             onChange={handleTelefonoChange}
                             placeholder='123-456-7890'
-                            maxLength={10}/>
+                            maxLength={10} />
                     </div>
                     <div className=' flex flex-col justify-center '>
                         <div className='flex justify-center mb-4'>

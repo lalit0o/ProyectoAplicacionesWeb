@@ -4,6 +4,7 @@ import MaterialAgregar from "./MaterialAgregar"
 import CategoriaMaterial from "./CategoriaMaterial"
 import { DataTable } from "@/components/DataTable"
 import { columns } from "./columns"
+export const dynamic = 'force-dynamic';
 
 export default async function MaterialesAdminPage() {
 

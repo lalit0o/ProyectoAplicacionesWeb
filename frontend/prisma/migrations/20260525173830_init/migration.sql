@@ -48,19 +48,39 @@ CREATE TABLE "pedidos" (
 CREATE TABLE "productos" (
     "id" SERIAL NOT NULL,
     "titulo" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL DEFAULT 'Sin descripción',
     "precio" DOUBLE PRECISION NOT NULL,
     "imagenUrl" TEXT,
     "enStock" BOOLEAN NOT NULL DEFAULT true,
+    "categoriaId" INTEGER,
 
     CONSTRAINT "productos_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "categorias_productos" (
+    "id" SERIAL NOT NULL,
+    "nombre" TEXT NOT NULL,
+
+    CONSTRAINT "categorias_productos_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "materiales" (
     "id" SERIAL NOT NULL,
     "nombre" TEXT NOT NULL,
+    "enStock" BOOLEAN NOT NULL DEFAULT true,
+    "categoriaId" INTEGER,
 
     CONSTRAINT "materiales_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "categorias_materiales" (
+    "id" SERIAL NOT NULL,
+    "nombre" TEXT NOT NULL,
+
+    CONSTRAINT "categorias_materiales_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -97,6 +117,12 @@ CREATE TABLE "recetas" (
 CREATE UNIQUE INDEX "usuarios_email_key" ON "usuarios"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "categorias_productos_nombre_key" ON "categorias_productos"("nombre");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "categorias_materiales_nombre_key" ON "categorias_materiales"("nombre");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "pagos_simulados_pedidoId_key" ON "pagos_simulados"("pedidoId");
 
 -- AddForeignKey
@@ -107,6 +133,12 @@ ALTER TABLE "pedidos" ADD CONSTRAINT "pedidos_usuarioId_fkey" FOREIGN KEY ("usua
 
 -- AddForeignKey
 ALTER TABLE "pedidos" ADD CONSTRAINT "pedidos_direccionId_fkey" FOREIGN KEY ("direccionId") REFERENCES "direcciones"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "productos" ADD CONSTRAINT "productos_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "categorias_productos"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "materiales" ADD CONSTRAINT "materiales_id_fkey" FOREIGN KEY ("id") REFERENCES "categorias_materiales"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "detalle_pedidos" ADD CONSTRAINT "detalle_pedidos_pedidoId_fkey" FOREIGN KEY ("pedidoId") REFERENCES "pedidos"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

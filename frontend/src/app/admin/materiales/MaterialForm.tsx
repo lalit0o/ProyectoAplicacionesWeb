@@ -14,7 +14,7 @@ interface Props {
 export default function MaterialForm({ onSuccess, material, categoriasDisponibles }: Props) {
     const [isPending, startTransition] = useTransition()
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
-    const esEdicion = !!material
+    const esEdicion = material !== undefined && material !== null;
 
     const handleSubmit = async (formData: FormData) => {
         startTransition(async () => {
@@ -66,7 +66,7 @@ export default function MaterialForm({ onSuccess, material, categoriasDisponible
                         <option key={cat.id} value={cat.id}>
                             {cat.nombre}
                         </option>
-                    ))}
+                ))}
                 </select>
             </div>
 

@@ -1,11 +1,11 @@
-'use server'
+'use server' 
 
 import { prisma } from "@/lib/prisma"
-import { revalidatePath } from 'next/cache'
+import { revalidatePath } from 'next/cache' 
 
 
 export async function crearMaterial(formData: FormData) {
-    const nombre = formData.get("nombre") as string
+    const nombre = formData.get("nombre") as string 
     const categoriaId = formData.get("categoriaId") as string
 
     if (!nombre || nombre.trim() === "") {
@@ -64,7 +64,7 @@ export async function eliminarMaterial(id: number) {
         if (recetasAsignadas > 0) {
             return {
                 success: false,
-                error: "Este material está asignado a uno o más productos. Quítalo de las recetas antes de eliminarlo."
+                error: "Quítalo de las recetas antes de eliminarlo."
             }
         }
 
