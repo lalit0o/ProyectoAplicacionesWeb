@@ -1,3 +1,4 @@
+import Articulo from '@/components/Articulo';
 import { createWriteStream } from 'node:fs';
 import { create } from 'zustand'
 
@@ -29,11 +30,17 @@ type Store = {
     disminuirDelCarrito: (id: number) => void;
     aumentarDelCarrito: (id: number) => void;
     vaciarCarrito: () => void;
+    actualizarCantidad: (id: number, cantidad: number) => void;
 
 }
 
 
 export const useCartStore = create<Store>()((set, get) => ({
+
+    actualizarCantidad: (id, cantidad) => {
+        set((state) => ({ carrito: state.carrito.map((articulo) => articulo.id === id ? { ...articulo, cantidad } : articulo) }))
+    },
+
     vaciarCarrito: () => set({ carrito: [] }),
     carrito: [],
     modalOpen: false,

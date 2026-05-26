@@ -3,7 +3,7 @@
 import { useCartStore } from "@/store/useProductStore";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, CheckCircle2} from "lucide-react";
+import { Trash2, CheckCircle2, PlusCircle, MinusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import DireccionForm from "@/app/direccion/page";
@@ -13,11 +13,13 @@ export default function CarritoUI() {
 
     const carrito = useCartStore((state) => state.carrito);
     const eliminarCarrito = useCartStore((state) => state.eliminarDelCarrito);
+    const actualizarCantidad = useCartStore((state) => state.actualizarCantidad);
     const [mostrarModal, setMostrarModal] = useState(false);
     const [pedidoTerminado, setPedidoTerminado] = useState(false);
     const vaciarCarrito = useCartStore((state) => state.vaciarCarrito);
 
-    const total = carrito.reduce((acumulador, articulo) => acumulador + articulo.precio, 0);
+    const totalPiezas = carrito.reduce((acumulador, articulo) => acumulador + (articulo.cantidad || 1), 0);
+    const total = carrito.reduce((acumulador, articulo) => acumulador + (articulo.precio * (articulo.cantidad || 1)), 0);
 
     if (carrito.length === 0) {
         return (
@@ -33,7 +35,7 @@ export default function CarritoUI() {
         );
     }
 
-    const handlePedidoExitoso = () => { setMostrarModal(false); setPedidoTerminado(true); vaciarCarrito();}
+    const handlePedidoExitoso = () => { setMostrarModal(false); setPedidoTerminado(true); vaciarCarrito(); }
 
     if (pedidoTerminado) {
         return (
@@ -54,7 +56,7 @@ export default function CarritoUI() {
 
 
     return (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-20">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-20 ml-10">
 
             <div className="lg:col-span-2 flex flex-col gap-10">
                 <h2 className="text-2xl font-serif text-zinc-900 border-b pb-5">Revisar Carrito</h2>
@@ -63,7 +65,7 @@ export default function CarritoUI() {
                     <div key={art.id} className="flex flex-row items-center gap-6 py-4 border-b border-zinc-100 group">
 
 
-                        <div className="relative h-24 w-24 bg-zinc-50 rounded-md overflow-hidden flex-shrink-0">
+                        <div className="relative h-24 w-24 bg-zinc-50 rounded-md overflow-hidden shrink-0">
                             <Image
                                 src={art.imagenUrl || '/vestido.png'}
                                 fill
@@ -74,9 +76,23 @@ export default function CarritoUI() {
                         </div>
 
 
-                        <div className="flex-grow">
+                        <div className="grow">
                             <h3 className="text-lg font-medium text-zinc-900">{art.titulo}</h3>
-                            <p className="text-zinc-500 mt-1">${art.precio.toFixed(2)} MXN</p>
+                            <p className="text-zinc-500 mt-1">${(art.precio * (art.cantidad)).toFixed(2)} MXN</p>
+                        </div>
+
+                        <div className="flex items-center gap-2 select-none bg-zinc-200 rounded-lg p-1 px-2">
+                            <button type="button" onClick={() => actualizarCantidad(art.id, Math.max(1, art.cantidad - 1))} className="text-zinc-400 hover:text-zinc-700 transition-colors disabled:opacity-30" disabled={art.cantidad <= 1}>
+                                <MinusCircle className="h-5 w-5" />
+                            </button>
+
+                            <span className="w-6 text-center font-medium text-zinc-800 text-sm">
+                                {art.cantidad}
+                            </span>
+
+                            <button type="button" onClick={() => actualizarCantidad(art.id, art.cantidad + 1)} className="text-zinc-400 hover:text-zinc-700 transition-colors">
+                                <PlusCircle className="h-5 w-5" />
+                            </button>
                         </div>
 
 
@@ -121,7 +137,7 @@ export default function CarritoUI() {
                                     <button onClick={() => setMostrarModal(false)} className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900 transition-colors">
                                         ✕
                                     </button>
-                                    <DireccionForm onClose={() => setMostrarModal(false)} onSuccess={handlePedidoExitoso}  carrito={carrito} total={total}/>
+                                    <DireccionForm onClose={() => setMostrarModal(false)} onSuccess={handlePedidoExitoso} carrito={carrito} total={total} />
                                 </div>
                             </div>
                         )}
