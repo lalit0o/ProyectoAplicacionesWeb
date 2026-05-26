@@ -6,36 +6,19 @@ import { put, del } from '@vercel/blob'
 
 export async function eliminarProducto(id: number) {
     try {
-        
-        const pedidosEnCurso = await prisma.detallePedido.count({
-            where: {
-                productoId: id,
-                pedido: {
-                    estadoPedido: {
-                        not: "ENTREGADO"
-                    }
-                }
-            }
-        })
-   console.log(`Producto ${id}: ${pedidosEnCurso} pedidos en curso`) 
-        if (pedidosEnCurso > 0) {
-            return {
-                success: false,
-                error: `Este producto tiene ${pedidosEnCurso} pedido(s) en curso. No puede eliminarse hasta que se entreguen.`
-            }
-        }
-
-      
-        await prisma.producto.delete({
-            where: { id }
+        await prisma.producto.update({
+            where: { id },
+            data: { activo: false } // Lo marcamos como inactivo
         })
 
         revalidatePath('/admin/productos')
+        revalidatePath('/categoria/[categoria]', 'layout')
+        
         return { success: true }
 
     } catch (error) {
-        console.error("Error al eliminar producto:", error)
-        return { success: false, error: "Error al eliminar el producto." }
+        console.error("Error al archivar producto:", error)
+        return { success: false, error: "Error al archivar el producto." }
     }
 }
 

@@ -80,7 +80,9 @@ export default async function PedidosAdminPage() {
                 <DataTable
                     columns={columns}
                     data={pedidos}
-                    searchKey="id"
+                    searchKey="cliente"
+                    filterKey="estadoPedido"
+                    filterOptions={["PENDIENTE", "ACEPTADO", "ELABORANDO", "TERMINADO", "ENVIADO", "ENTREGADO"]}
                 />
             </div>
 

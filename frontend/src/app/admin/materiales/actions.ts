@@ -80,12 +80,55 @@ export async function eliminarMaterial(id: number) {
 
 export async function toggleStock(id: number, estadoActual: boolean) {
     try {
+        const nuevoEstado = !estadoActual;
+
+        // 1. Actualizamos el estado del material en la base de datos
         await prisma.material.update({
             where: { id },
-            data: { enStock: !estadoActual }
+            data: { enStock: nuevoEstado }
         })
 
+        // 2. REACCIÓN EN CADENA: Actualización automática de productos
+        if (!nuevoEstado) {
+            // A) Si el material se AGOTÓ, apagamos todos los productos que lo usen en su receta
+            await prisma.producto.updateMany({
+                where: {
+                    recetas: { some: { materialId: id } } 
+                },
+                data: { enStock: false }
+            });
+        } else {
+            // B) Si el material VOLVIÓ, buscamos los productos que lo usan
+            const productosAfectados = await prisma.producto.findMany({
+                where: {
+                    recetas: { some: { materialId: id } }
+                },
+                include: {
+                    recetas: {
+                        include: {
+                            material: true // Traemos el estado actual de cada material de la receta
+                        }
+                    }
+                }
+            });
+
+            // Revisamos uno por uno si ya tienen TODO lo necesario para fabricarse
+            for (const producto of productosAfectados) {
+                const listoParaArmar = producto.recetas.every(r => r.material.enStock === true);
+                
+                if (listoParaArmar) {
+                    await prisma.producto.update({
+                        where: { id: producto.id },
+                        data: { enStock: true }
+                    });
+                }
+            }
+        }
+
+        // 3. Limpiamos la caché para que el panel admin y la tienda se actualicen al instante
         revalidatePath('/admin/materiales')
+        revalidatePath('/categoria/[categoria]', 'layout') 
+
         return { success: true }
 
     } catch (error) {
@@ -93,7 +136,6 @@ export async function toggleStock(id: number, estadoActual: boolean) {
         return { success: false, error: "Error al cambiar el estado de stock." }
     }
 }
-
 
 export async function crearCategoriaMaterial(formData: FormData) {
     const nombre = formData.get("nombre") as string

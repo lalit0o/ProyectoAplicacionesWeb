@@ -22,6 +22,9 @@ export default async function ProductosAdminPage() {
     })
 
     const productosDB = await prisma.producto.findMany({
+        where: {
+        activo: true 
+    },
         orderBy: { titulo: "asc" },
         include: {
             categoria: true,

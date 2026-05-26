@@ -42,6 +42,10 @@ export const columns: ColumnDef<Pedido>[] = [
     {
         accessorKey: "estadoPedido",
         header: "Estado",
+        filterFn: (row, id, filterValue) => {
+            if (!filterValue) return true
+            return row.original.estadoPedido === filterValue
+        },
         cell: ({ row }) => {
             const estado = row.getValue("estadoPedido") as string
             const colores: Record<string, string> = {

@@ -15,6 +15,7 @@ export async function obtenerArticulos(categoria: string): Promise<ArticuloType[
         const productos = await prisma.producto.findMany({
             where: {
                 enStock: true,
+                activo: true,
                 ...(categoria !== "todos" && {
                     categoria: {
                         nombre: categoria

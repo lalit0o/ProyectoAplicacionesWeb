@@ -25,12 +25,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   meta?: any 
   searchKey: string 
+  filterKey?: string
+  filterOptions?: string[] 
 }
 
 export function DataTable<TData, TValue>({
@@ -38,6 +39,8 @@ export function DataTable<TData, TValue>({
   data,
   meta,
   searchKey,
+  filterKey, 
+  filterOptions,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -61,23 +64,43 @@ export function DataTable<TData, TValue>({
       sorting,
       pagination,
     },
-   
-    
     meta, 
   })
 
   return (
-    <div className="space-y-4 ">
-      <div className="flex items-center">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
         <Input
-          placeholder="Buscar por nombre"
-    
+          placeholder="Buscar..."
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className="mt-8 max-w-sm border-zinc-150 focus-visible:ring-zinc-800"
+          className="max-w-sm border-zinc-150 focus-visible:ring-zinc-800"
         />
+
+        {filterKey && filterOptions && (
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-sm font-semibold text-zinc-700 whitespace-nowrap">
+              Estado:
+            </span>
+            <select
+              className="px-4 py-2 border border-zinc-200 rounded-md outline-none focus:ring-2 focus:ring-zinc-900 transition-all bg-white text-sm w-full sm:w-auto"
+              value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
+              onChange={(e) => {
+                const valor = e.target.value;
+                table.getColumn(filterKey)?.setFilterValue(valor === "todos" ? undefined : valor);
+              }}
+            >
+              <option value="todos">Todos</option>
+              {filterOptions.map((opcion) => (
+                <option key={opcion} value={opcion}>
+                  {opcion}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="rounded-2xl border border-zinc-200 bg-white overflow-hidden shadow-sm">
@@ -124,7 +147,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
 
-
         <div className="flex items-center justify-between px-2 py-4">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium text-zinc-600">Filas por página</p>
@@ -168,8 +190,7 @@ export function DataTable<TData, TValue>({
               </Button>
             </div>
           </div>
-      </div>
-
+        </div>
       </div>
     </div>
   )

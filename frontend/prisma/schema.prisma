@@ -89,7 +89,7 @@ model Producto {
   // Relaciones
   detalles DetallePedido[]
   recetas  Receta[]
-
+  activo      Boolean @default(true)
   categoriaId Int?
   categoria   CategoriaProducto? @relation(fields: [categoriaId], references: [id])
 
