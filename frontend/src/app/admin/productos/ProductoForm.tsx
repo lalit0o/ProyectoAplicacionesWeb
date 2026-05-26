@@ -61,7 +61,6 @@ export default function ProductoForm({
             
             <div className="flex gap-6">
 
-                }
                 <div className="flex-shrink-0 w-56">
                     <label className="text-sm font-semibold text-zinc-700 block mb-2">
                         Imagen del Producto
