@@ -49,7 +49,6 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
             }
             else {
                 setMostrarModalExito(true);
-                onSuccess();
             }
         } catch (error) {
             console.log(error);
@@ -104,17 +103,14 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
 
             {mostrarModalExito && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl flex flex-col items-center text-center transform scale-100 transition-all dynamic-island">
-                        <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-4 text-emerald-600 border border-emerald-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-8 h-8">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                        </div>
-                        <h3 className="text-xl font-bold text-zinc-900 mb-2">
+                    <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center transform scale-100 transition-all dynamic-island">
+
+                        <h3 className="text-2xl font-bold text-zinc-900 mb-3">
                             Pedido Guardado
                         </h3>
-                        <p className="text-sm text-zinc-500 mb-6">
-                            Tu dirección y pedido se han registrado exitosamente en nuestro sistema.
+
+                        <p className="text-base text-zinc-600 mb-8">
+                            Tu dirección y pedido se han registrado exitosamente.
                         </p>
 
                         <button onClick={handleModalExito} className="w-full py-3 bg-zinc-900 text-white rounded-xl font-semibold hover:bg-zinc-800 transition-all active:scale-[0.98] shadow-md">
@@ -122,7 +118,7 @@ export default function DireccionForm({ onClose, onSuccess, carrito, total }: Fo
                         </button>
                     </div>
                 </div>
-            )};
+            )}
         </div>
     );
 }
