@@ -65,6 +65,12 @@ export default function Register() {
             console.log("Debes ingresar todos los parámetros");
         }
 
+        if(password.length<8)
+
+            {
+                cambiarModal('Error','La contraseña debe ser de al menos 8 caracteres');
+                return;
+            }
         if(password !==repeatPassword){
             cambiarModal('Error','Las contraseñas ingresadas deben coincidir');
             return;

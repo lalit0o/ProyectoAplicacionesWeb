@@ -26,7 +26,7 @@ export async function crearProducto(formData: FormData, materialesIds: number[])
     const titulo = formData.get("titulo") as string
     const precio = Number(formData.get("precio"))
     const imagenUrl = formData.get("imagenUrl") as string || null
-    const descripcion = formData.get("descripcion") as string || null
+    const descripcion = formData.get("descripcion") as string
     const categoriaId = formData.get("categoriaId") as string
 
     if (!titulo || titulo.trim() === "") {
@@ -43,7 +43,7 @@ export async function crearProducto(formData: FormData, materialesIds: number[])
                 titulo: titulo.trim(),
                 precio,
                 imagenUrl,
-                descripcion: descripcion?.trim() || null,
+                descripcion: descripcion?.trim() ? descripcion.trim() : "Sin descripción",
                 enStock: true,
                 categoriaId: categoriaId ? Number(categoriaId) : null,
                 recetas: {
